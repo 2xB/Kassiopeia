@@ -54,6 +54,11 @@ set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror" )
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror" )
 #set( CMAKE_EXE_LINKER_FLAG "${CMAKE_EXE_LINKER_FLAGS}" )
 
+if( NOT CMAKE_BUILD_TYPE )
+    message(STATUS "Setting build type to 'Release' as none was specified.")
+    set( CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE )
+endif()
+
 if (CMAKE_BUILD_TYPE MATCHES Rel)
     option( COMPILER_TUNE_OPTIONS "Enable additional tuning options [compiles for local CPU, use with care!]" OFF )
     if( COMPILER_TUNE_OPTIONS )
