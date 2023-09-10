@@ -3,7 +3,9 @@
 This Simulation package allows to run highly customizable particle tracking simulations
 along with calculations of electric and magnetic fields.
 
-Find a full user guide under http://katrin-experiment.github.io/Kassiopeia/index.html
+Find a full user guide under http://katrin-experiment.github.io/Kassiopeia/index.
+
+test
 
 [![Release](https://img.shields.io/github/v/release/KATRIN-Experiment/Kassiopeia)](https://github.com/KATRIN-Experiment/Kassiopeia/releases)
 [![Code Size](https://img.shields.io/github/languages/code-size/KATRIN-Experiment/Kassiopeia)](https://github.com/KATRIN-Experiment/Kassiopeia)
