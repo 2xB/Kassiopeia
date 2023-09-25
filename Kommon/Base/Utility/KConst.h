@@ -459,5 +459,13 @@ constexpr double Ue3sq()
 #endif  //KCONST_H
 
 #else
-#error "Unsupported value for KConst_REFERENCE_EPOCH."
+
+#include <assert.h>
+
+// Details on these macros: https://gcc.gnu.org/onlinedocs/cpp/Stringizing.html
+#define xstr(s) str(s)
+#define str(s) #s
+
+static_assert(false, "KConst_REFERENCE_EPOCH is unsupported: '" xstr(KConst_REFERENCE_EPOCH) "'");
+
 #endif
