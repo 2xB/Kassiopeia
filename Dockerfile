@@ -22,6 +22,21 @@ ARG KASSIOPEIA_GROUP
 
 LABEL description="Runtime base container"
 
+# Build VTK for testing purposes
+# Based on https://github.com/lukin0110/docker-vtk-python/blob/master/Dockerfile
+
+RUN mkdir /tmpbuild
+RUN cd /tmpbuild && wget https://gitlab.kitware.com/2xB/vtk/-/archive/2xB/runtime_error/vtk-2xB-runtime_error.tar.gz && tar -zxvf vtk-2xB-runtime_error.tar.gz
+RUN mkdir /vtk-build
+RUN cd /vtk-build/ && cmake \
+  -DCMAKE_BUILD_TYPE:STRING=Release \
+  -DBUILD_TESTING:BOOL=OFF \
+  -DVTK_WRAP_TCL:BOOL=ON \
+  -DVTK_USE_TK:BOOL=ON \
+  /tmpbuild/vtk-2xB-runtime_error
+RUN cd /vtk-build2/ && make -j$(nproc) install
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib:/vtk-build2/lib
+
 # # TODO REMOVE FOR FEDORA 39
 # RUN dnf update -y \
 #  && dnf install -y --setopt=install_weak_deps=False dnf-plugins-core \
@@ -62,23 +77,6 @@ RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
  && rm /packages \
  && dnf clean all
-
-
-# Build VTK for testing purposes
-# Based on https://github.com/lukin0110/docker-vtk-python/blob/master/Dockerfile
-
-RUN mkdir /tmpbuild
-RUN cd /tmpbuild && wget https://gitlab.kitware.com/2xB/vtk/-/archive/2xB/runtime_error/vtk-2xB-runtime_error.tar.gz && tar -zxvf vtk-2xB-runtime_error.tar.gz
-RUN mkdir /vtk-build
-RUN cd /vtk-build/ && cmake \
-  -DCMAKE_BUILD_TYPE:STRING=Release \
-  -DBUILD_TESTING:BOOL=OFF \
-  -DVTK_WRAP_TCL:BOOL=ON \
-  -DVTK_USE_TK:BOOL=ON \
-  /tmpbuild/vtk-2xB-runtime_error
-RUN cd /vtk-build2/ && make -j$(nproc) install
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib:/vtk-build2/lib
-
 # ---
 
 # --- build ---
