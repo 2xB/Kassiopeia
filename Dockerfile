@@ -48,7 +48,7 @@ RUN cd /vtk-build/ && cmake \
   -DVTK_USE_TK:BOOL=ON \
   /tmpbuild/vtk-2xB-runtime_error
 RUN cd /vtk-build/ && make -j$(nproc)
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib:/vtk-build2/lib
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib:/vtk-build/lib
 
 # Setting user
 # Compare:
