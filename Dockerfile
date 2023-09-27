@@ -47,7 +47,7 @@ RUN cd /vtk-build/ && cmake \
   -DVTK_WRAP_TCL:BOOL=ON \
   -DVTK_USE_TK:BOOL=ON \
   /tmpbuild/vtk-master
-RUN cd /vtk-build/ && make -j$(nproc)
+RUN cd /vtk-build/ && make -j$(nproc) install
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib:/vtk-build/lib
 
 # Setting user
