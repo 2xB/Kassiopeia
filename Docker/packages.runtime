@@ -24,3 +24,18 @@ liburing
 
 git
 gdb
+
+binutils
+cmake
+make
+gcc
+gcc-c++
+ninja-build
+
+gsl-devel
+boost-devel
+hdf5-devel
+liburing-devel
+ocl-icd-devel
+log4cxx-devel
+openmpi-devel
