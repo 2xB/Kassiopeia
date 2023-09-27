@@ -43,3 +43,4 @@ openmpi-devel
 mesa-libGL-devel
 libGLEW
 libX11
+libglvnd-glx
