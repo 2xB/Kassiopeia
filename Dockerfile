@@ -22,6 +22,19 @@ ARG KASSIOPEIA_GROUP
 
 LABEL description="Runtime base container"
 
+# # TODO REMOVE FOR FEDORA 39
+# RUN dnf update -y \
+#  && dnf install -y --setopt=install_weak_deps=False dnf-plugins-core \
+#  && dnf clean all
+# RUN dnf copr enable thofmann/log4xx-1.x -y
+# # END TODO
+
+COPY Docker/packages.runtime packages
+RUN dnf update -y \
+ && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
+ && rm /packages \
+ && dnf clean all
+
 # Build VTK for testing purposes
 # Based on https://github.com/lukin0110/docker-vtk-python/blob/master/Dockerfile
 
@@ -36,19 +49,6 @@ RUN cd /vtk-build/ && cmake \
   /tmpbuild/vtk-2xB-runtime_error
 RUN cd /vtk-build2/ && make -j$(nproc) install
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib:/vtk-build2/lib
-
-# # TODO REMOVE FOR FEDORA 39
-# RUN dnf update -y \
-#  && dnf install -y --setopt=install_weak_deps=False dnf-plugins-core \
-#  && dnf clean all
-# RUN dnf copr enable thofmann/log4xx-1.x -y
-# # END TODO
-
-COPY Docker/packages.runtime packages
-RUN dnf update -y \
- && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
- && rm /packages \
- && dnf clean all
 
 # Setting user
 # Compare:
