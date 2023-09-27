@@ -41,3 +41,5 @@ log4cxx-devel
 openmpi-devel
 
 mesa-libGL-devel
+libGLEW
+libX11
