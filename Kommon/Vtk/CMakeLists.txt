@@ -1,6 +1,8 @@
 # Setup VTK modules for use in CMake
 # For details, see: https://vtk.org/doc/nightly/html/md__builds_gitlab-kitware-sciviz-ci_Documentation_Doxygen_ModuleMigration.html
 
+find_package( OpenGL )
+
 find_package(VTK COMPONENTS vtkCommonCore)
 
 if( VTK_MAJOR_VERSION GREATER 8 )
