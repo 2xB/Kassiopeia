@@ -1,6 +1,4 @@
 mesa-dri-drivers
-vtk
-vtk-qt
 
 boost-filesystem
 
@@ -15,6 +13,9 @@ hdf5
 log4cxx
 ocl-icd
 openmpi
+
+tcl
+tk
 
 root-core
 root-genvector

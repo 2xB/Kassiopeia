@@ -9,7 +9,6 @@ gsl-devel
 boost-devel
 hdf5-devel
 liburing-devel
-vtk-devel
 ocl-icd-devel
 log4cxx-devel
 openmpi-devel
