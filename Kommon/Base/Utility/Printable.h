@@ -8,7 +8,7 @@
 #ifndef KOMMON_PRINTABLE_COMPONENT_H
 #define KOMMON_PRINTABLE_COMPONENT_H
 
-#include <iostream>
+#include <ostream>
 
 namespace katrin
 {

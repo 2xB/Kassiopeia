@@ -6,12 +6,10 @@
 #endif
 
 #include "KAttribute.hh"
-#include "KAttributeBase.hh"
 #include "KElementBase.hh"
 #include "KSimpleElement.hh"
 
 #include <string>
-#include <list>
 
 namespace katrin
 {
@@ -115,43 +113,5 @@ template<class XType> template<class XElementType> int KComplexElement<XType>::C
     return 0;
 }
 }  // namespace katrin
-
-/*
- * handlers for automatic input conversion into common sequence types
- */
-namespace std
-{
-
-template<class T> std::istream& operator>>(std::istream& stream, std::vector<T>& data)
-{
-    while (!stream.eof()) {
-        std::string str;
-        stream >> str;
-        data.push_back(str);
-    }
-    return stream;
-}
-
-template<class T> std::istream& operator>>(std::istream& stream, std::list<T>& data)
-{
-    while (!stream.eof()) {
-        std::string str;
-        stream >> str;
-        data.push_back(str);
-    }
-    return stream;
-}
-
-template<class T> std::istream& operator>>(std::istream& stream, std::set<T>& data)
-{
-    while (!stream.eof()) {
-        std::string str;
-        stream >> str;
-        data.insert(str);
-    }
-    return stream;
-}
-
-}  // namespace std
 
 #endif

@@ -1,14 +1,10 @@
 #ifndef Kommon_KToken_hh_
 #define Kommon_KToken_hh_
 
-#include "KInitializationMessage.hh"
 #include "KBaseStringUtils.h"
 #include "KException.h"
-#include "KLogger.h"
 
-#include <sstream>
 #include <string>
-#include <limits.h>
 
 namespace katrin
 {

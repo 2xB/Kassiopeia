@@ -5,7 +5,6 @@
 #include "KProcessor.hh"
 
 #include <map>
-#include <algorithm>
 
 namespace katrin
 {

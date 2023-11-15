@@ -2,7 +2,6 @@
 #define Kommon_KContainer_hh_
 
 #include "KNamed.h"
-#include <memory>
 
 namespace katrin
 {
