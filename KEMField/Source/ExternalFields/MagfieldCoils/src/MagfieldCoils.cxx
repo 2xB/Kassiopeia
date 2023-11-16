@@ -1043,7 +1043,8 @@ void MagfieldCoils::RemoteSourcepointGroup(int g)
      {
         int i=Cin[g][c];    double L=coil[i][7]; 
         double zA=Z[g][c]-L/2.;  double zB=Z[g][c]+L/2.;  // coil edges
-	if(zA<zmin)  zmin=zA;  if(zB>zmax)  zmax=zB;  
+        if(zA<zmin)  zmin=zA;
+        if(zB>zmax)  zmax=zB;
      }
      z0rem=z0remG[g]=(zmin+zmax)/2.; // group center in group Z-coordinate system
 // Remote convergence radius of group --> roremG[g] :
@@ -1052,7 +1053,7 @@ void MagfieldCoils::RemoteSourcepointGroup(int g)
      {
         int i=Cin[g][c];  
         double roremc=Funrorem(i, z0rem-Z[g][c]); // remote source point relative to coil center
-	if(roremc>rorem)  rorem=roremc;  
+        if(roremc>rorem)  rorem=roremc;  
      }
      roremG[g]=rorem;
 }
@@ -1089,7 +1090,7 @@ void MagfieldCoils::MagsourceMagchargeCoils()
   for(int i=0; i<Ncoil; i++)
   {
 // Coil i parameters:
-     L=coil[i][7]; // current, turns, length
+     //L=coil[i][7]; // current, turns, length
      Rmin=coil[i][8];  Rmax=coil[i][9]; // inner and outer radius
      sigma=coil[i][10];    // current density
      output <<  scientific << setw(7) << i <<endl; // coil index
