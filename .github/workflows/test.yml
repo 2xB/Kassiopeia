@@ -1,0 +1,56 @@
+name: Test Kassiopeia
+
+# as described on https://katrin-experiment.github.io/Kassiopeia/compiling.html
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+
+# Keep the following dependency installation commands in sync with https://katrin-experiment.github.io/Kassiopeia/compiling.html !
+jobs:
+  ubuntu_20_04:
+    runs-on: ubuntu-latest
+    container: ubuntu:20.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        apt-get update -y && apt-get install -y \
+          build-essential cmake cmake-curses-gui \
+          libboost-all-dev libfftw3-dev libgsl0-dev libhdf5-dev liblog4cxx-dev libomp-dev libopenmpi-dev \
+          libpcl-dev libsqlite3-dev libssl-dev libtbb-dev libvtk6-dev libxml2-dev ocl-icd-opencl-dev zlib1g-dev
+        
+    - name: Build code
+      run: |
+        .\setup.sh
+
+    - name: Launch environment and run tests
+      run: |
+        source install\bin\kasperenv.sh && UnitTestKasper
+
+  fedora_31:
+    runs-on: ubuntu-latest
+    container: fedora:31
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        dnf install -y \
+            @development-tools cmake cmake-gui \
+            root-core root-io-xmlparser root-minuit2 root-spectrum \
+            vtk vtk-qt vtk-java \
+            boost-devel fftw-devel gsl-devel hdf5-devel libomp-devel libxml2-devel log4cxx-devel \
+            ocl-icd-devel openmpi-devel openssl-devel pcl-devel sqlite-devel vtk-devel zlib-devel
+        
+    - name: Build code
+      run: |
+        .\setup.sh
+
+    - name: Launch environment and run tests
+      run: |
+        source install\bin\kasperenv.sh && UnitTestKasper
