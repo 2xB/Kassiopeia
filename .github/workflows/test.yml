@@ -32,9 +32,15 @@ jobs:
             build-essential cmake cmake-curses-gui \
             libboost-all-dev libfftw3-dev libgsl-dev libhdf5-dev liblog4cxx-dev libomp-dev libopenmpi-dev \
             libsqlite3-dev libssl-dev libvtk7-dev libxml2-dev ocl-icd-opencl-dev zlib1g-dev
-        
+
+    - name: Install root
+      run: |
+        wget https://root.cern/download/root_v6.28.06.Linux-centos8-x86_64-gcc8.5.tar.gz
+        tar -xf root_v6.28.06.Linux-centos8-x86_64-gcc8.5.tar.gz
+
     - name: Build code
       run: |
+        source root/bin/thisroot.sh
         if ${{ matrix.use_clang }}; then
             echo "Using Clang."
             apt install -y clang
@@ -45,7 +51,7 @@ jobs:
 
     - name: Launch environment and run tests
       run: |
-        source install\bin\kasperenv.sh && UnitTestKasper
+        source root/bin/thisroot.sh && source install/bin/kasperenv.sh && UnitTestKasper
 
   fedora_37:
     strategy:
@@ -63,7 +69,7 @@ jobs:
             vtk vtk-qt vtk-java \
             boost-devel fftw-devel gsl-devel hdf5-devel libomp-devel libxml2-devel log4cxx-devel \
             ocl-icd-devel openmpi-devel openssl-devel sqlite-devel vtk-devel zlib-devel
-        
+
     - name: Build code
       run: |
         if ${{ matrix.use_clang }}; then
@@ -76,4 +82,4 @@ jobs:
 
     - name: Launch environment and run tests
       run: |
-        source install\bin\kasperenv.sh && UnitTestKasper
+        source install/bin/kasperenv.sh && UnitTestKasper
