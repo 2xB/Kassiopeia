@@ -41,7 +41,7 @@ jobs:
             export CC=/usr/bin/clang
             export CXX=/usr/bin/clang++
         fi
-        .\setup.sh
+        ./setup.sh
 
     - name: Launch environment and run tests
       run: |
@@ -72,7 +72,7 @@ jobs:
             export CC=/usr/bin/clang
             export CXX=/usr/bin/clang++
         fi
-        .\setup.sh
+        ./setup.sh
 
     - name: Launch environment and run tests
       run: |
