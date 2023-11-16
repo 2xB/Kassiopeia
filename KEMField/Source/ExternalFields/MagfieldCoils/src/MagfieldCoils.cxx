@@ -167,7 +167,7 @@ void MagfieldCoils::CoilRead()
       coil[i]= new double[14];
    }
 // Reading the coil parameters:   
-   double cu, Cx, Cy, Cz, alpha, beta, tu, L, Rmin,Rmax, v[3];
+   double cu, Cx, Cy, Cz, alpha, beta, tu, L, Rmin,Rmax;
    for(int i=0; i<Ncoil; i++)
    {
        input >> cu >> Cx >> Cy >> Cz >> alpha >> beta >> tu >> L >> Rmin >> Rmax ;
@@ -870,7 +870,7 @@ void MagfieldCoils::Magsource2RemoteCoil(int i, double z0, double rorem)
 {
   const double mu0=4.*M_PI*1.e-7;
   double x[1001], w[1001];  // nodes and weights
-  double L, sigma, Zmin, Zmax, Rmin, Rmax, st;
+  double L, sigma, Zmin, Zmax, Rmin, Rmax;
 // Coil parameters:
   L=coil[i][7]; // coil length
   Zmin=-L/2.;  Zmax=L/2.; // coil endpoints relative to coil center
@@ -1076,7 +1076,7 @@ void MagfieldCoils::MagsourceMagchargeCoils()
 //     i: coil index, n source constant index.
 {
 // Output to file dirname+objectname+magsource_remote.txt :
-  double Rmin, Rmax, L, rorem, sigma;
+  double Rmin, Rmax, sigma;
   string filename=dirname+objectname+"magsource_remote.txt";
   ofstream output;
   output.precision(16);
@@ -1187,7 +1187,7 @@ void MagfieldCoils::Magsource2CentralCoil(int i, double z0, double Rocen)
 {
   const double mu0=4.*M_PI*1.e-7;
   double x[1001], w[1001];  // nodes and weights
-  double L, sigma, Zmin, Zmax, Rmin, Rmax, st;
+  double L, sigma, Zmin, Zmax, Rmin, Rmax;
 // Coil parameters:
   L=coil[i][7]; 
   Zmin=-L/2.;  Zmax=L/2.;  // coil endpoints relative to coil center
@@ -1259,7 +1259,6 @@ void MagfieldCoils::MagsourceCentralCoils()
 //   (defined relative to the coil center; positive z0 in coil direction u),
 //     rocen: central convergence radius for a fixed source point and coil.
 {
-  double z0, Rmin, Rmax, L, rorem, cu, tu;
 // Output to file dirname+objectname+magsource_central.txt :
   string filename=dirname+objectname+"magsource_central.txt";
   ofstream output;
@@ -1428,7 +1427,7 @@ void MagfieldCoils::CentralSourcepointsGroup(int g)
 // Central source points: 
 {
     vector<double> Z0cen;
-    double z0, rocen;
+    double z0;
     double roremC=roremG[g];  
     double z0min=z0remG[g]-2.*roremC;
     double z0max=z0remG[g]+2.*roremC;

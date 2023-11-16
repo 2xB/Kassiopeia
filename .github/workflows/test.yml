@@ -49,10 +49,12 @@ jobs:
             export CXX=/usr/bin/clang++
         fi
         ./setup.sh
+      shell: bash
 
     - name: Launch environment and run tests
       run: |
         source root/bin/thisroot.sh && source install/bin/kasperenv.sh && UnitTestKasper
+      shell: bash
 
   fedora_37:
     strategy:
@@ -87,7 +89,9 @@ jobs:
             export CXX=/usr/bin/clang++
         fi
         ./setup.sh
+      shell: bash
 
     - name: Launch environment and run tests
       run: |
         source install/bin/kasperenv.sh && UnitTestKasper
+      shell: bash
