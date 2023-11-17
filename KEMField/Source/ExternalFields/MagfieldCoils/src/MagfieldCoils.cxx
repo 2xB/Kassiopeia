@@ -1,4 +1,5 @@
 #include "MagfieldCoils.h"
+#include <limits> // for std::numeric_limits
 
 
 MagfieldCoils::MagfieldCoils(string inputdirname,  string inputobjectname, string inputcoilfilename,
@@ -658,7 +659,7 @@ void MagfieldCoils::Magfield2EllipticCoil(int i, double z, double r, double& Bz,
 // the first, second and third complete elliptic integrals.
   double L, Zmin, Zmax, Rmin, Rmax, sigma;
   double R, Z, delr2, sumr2, delz2, eta, d, K, EK, PIK, S;
-  double sign, st, delRr, Rlow[2], Rhigh[2];
+  double sign, delRr, Rlow[2], Rhigh[2];
   const double mu0=4.*M_PI*1.e-7;
   double x[2][1001], w[2][1001];  // nodes and weights
 // Coil parameters:
@@ -1524,7 +1525,7 @@ bool MagfieldCoils::Magfield2Remote(bool bcoil, int ig, double z, double r, doub
   }
 // We start here the series expansion:
   Bz=Br=0.;
-  int nlast;
+  int nlast = -1;
   double brem;
   if(bcoil==true || even==true)  // even calculation
   {
@@ -1534,9 +1535,9 @@ bool MagfieldCoils::Magfield2Remote(bool bcoil, int ig, double z, double r, doub
      for(int n=2; n<=4; n++)
      {
         if(bcoil==true) 
-	   brem=Brem[ig][n];
-	else
-	   brem=BremG[ig][n];
+          brem=Brem[ig][n];
+        else
+          brem=BremG[ig][n];
 //        P[n]=c1[n]*u*P[n-1]-c2[n]*P[n-2];
 //        Pp[n]=c3[n]*u*Pp[n-1]-c4[n]*Pp[n-2];
         double uPp=u*Pp[n-1];  double uP=u*P[n-1];
@@ -1552,9 +1553,9 @@ bool MagfieldCoils::Magfield2Remote(bool bcoil, int ig, double z, double r, doub
      for(int n=6; n<=nmax-1; n+=2)
      {
         if(bcoil==true) 
-	   brem=Brem[ig][n];
-	else
-	   brem=BremG[ig][n];
+          brem=Brem[ig][n];
+        else
+          brem=BremG[ig][n];
         nlast=n;
         P[n]=(c7[n]*u2-c8[n])*P[n-2]-c9[n]*P[n-4];
         Pp[n]=(c10[n]*u2-c11[n])*Pp[n-2]-c12[n]*Pp[n-4];
@@ -1571,7 +1572,7 @@ bool MagfieldCoils::Magfield2Remote(bool bcoil, int ig, double z, double r, doub
   {
      for(int n=2; n<=nmax-1;n++)
      {
-	brem=BremG[ig][n];
+        brem=BremG[ig][n];
         nlast=n;
         P[n]=c1[n]*u*P[n-1]-c2[n]*P[n-2];
         Pp[n]=c3[n]*u*Pp[n-1]-c4[n]*Pp[n-2];
@@ -1588,7 +1589,7 @@ bool MagfieldCoils::Magfield2Remote(bool bcoil, int ig, double z, double r, doub
         }
      }
   }
-  if(nlast>=nmax-2)
+  if(nlast>=nmax-2 || nlast == -1)
      return false;
   else
      return true;
@@ -1699,7 +1700,7 @@ bool MagfieldCoils::Hfield(int i, double z, double r, double& Hz, double& Hr, do
 // We start here the series expansion.
 // Only the odd-n terms are needed in the series.
   double Hzplus,Hrplus,Hzplusold,Hrplusold,Heps,Hdelta;
-  int nlast;
+  int nlast = -1;
   for(int n=1; n<=nmax-1; n+=2)
   {
      nlast=n;
@@ -1722,7 +1723,7 @@ bool MagfieldCoils::Hfield(int i, double z, double r, double& Hz, double& Hr, do
      Hzplusold=Hzplus; 
      Hrplusold=Hrplus; 
   }
-  if(nlast>=nmax-2)
+  if(nlast>=nmax-2 || nlast == -1)
   {
      rc=1.;
      return false; 
@@ -1808,7 +1809,7 @@ bool MagfieldCoils::Magfield2Central(bool bcoil, int ig, int j, double z, double
   if(rc<1.e-10) goto label;
 //
 // We start here the central series expansion:
-  int nlast;
+  int nlast = -1;
   double bcen;
   for(int n=2; n<=nmax-1; n++)
   {
@@ -1834,7 +1835,7 @@ bool MagfieldCoils::Magfield2Central(bool bcoil, int ig, int j, double z, double
         if(Bdelta<Beps || Bdelta<1.e-20) break;
      }
   } 
-  if(nlast>=nmax-1)
+  if(nlast>=nmax-1 || nlast == -1)
   {
      rc=1.;
      return false; 
@@ -2341,6 +2342,7 @@ double MagfieldCoils::RJ_Carlson(double x,double y,double z,double p)
                C3=3./22.,C4=3./26.,C5=0.75*C3,C6=1.5*C4,C7=0.5*C2,C8=2.*C3;
   double a,alamb,alpha,ans,ave,b,beta,delp,delx,dely,delz,ea,eb,ec,ed,ee,
          fac,pt,rcx,rho,sum,sqrtx,sqrty,sqrtz,tau,xt,yt,zt;
+  rcx = std::numeric_limits<double>::quiet_NaN; // Avoid compiler warning of potentially undeclared variable
   if(FMIN3(x,y,z)<0. || FMIN(FMIN(x+y,x+z),FMIN(y+z,fabs(p)))<TINY ||
       FMAX(FMAX(x,y),FMAX(z,fabs(p)))>BIG)
   {

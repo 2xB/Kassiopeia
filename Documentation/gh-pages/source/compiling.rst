@@ -130,7 +130,7 @@ On a RedHat/Fedora Linux system, the packages can be installed through the comma
         @development-tools cmake cmake-gui \
         root-core root-io-xmlparser root-minuit2 root-spectrum \
         vtk vtk-qt vtk-java \
-        boost-devel fftw-devel gsl-devel hdf5-devel libomp-devel libxml2-devel log4cxx-devel \
+        boost-devel fftw-devel gsl-devel hdf5-devel libomp-devel liburing-devel libxml2-devel log4cxx-devel \
         ocl-icd-devel openmpi-devel openssl-devel sqlite-devel vtk-devel zlib-devel
 
 Tested on Fedora Linux 37.
