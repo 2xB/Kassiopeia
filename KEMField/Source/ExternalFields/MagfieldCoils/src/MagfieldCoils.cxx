@@ -2342,7 +2342,12 @@ double MagfieldCoils::RJ_Carlson(double x,double y,double z,double p)
                C3=3./22.,C4=3./26.,C5=0.75*C3,C6=1.5*C4,C7=0.5*C2,C8=2.*C3;
   double a,alamb,alpha,ans,ave,b,beta,delp,delx,dely,delz,ea,eb,ec,ed,ee,
          fac,pt,rcx,rho,sum,sqrtx,sqrty,sqrtz,tau,xt,yt,zt;
-  rcx = std::numeric_limits<double>::quiet_NaN(); // Avoid compiler warning of potentially undeclared variable
+
+  // Avoid compiler warning of potentially undeclared variables
+  rcx = std::numeric_limits<double>::quiet_NaN();
+  a = std::numeric_limits<double>::quiet_NaN();
+  b = std::numeric_limits<double>::quiet_NaN();
+
   if(FMIN3(x,y,z)<0. || FMIN(FMIN(x+y,x+z),FMIN(y+z,fabs(p)))<TINY ||
       FMAX(FMAX(x,y),FMAX(z,fabs(p)))>BIG)
   {
