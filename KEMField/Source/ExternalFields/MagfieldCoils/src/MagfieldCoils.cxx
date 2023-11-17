@@ -1806,41 +1806,41 @@ bool MagfieldCoils::Magfield2Central(bool bcoil, int ig, int j, double z, double
      Bz=BcenG[ig][j][0]+BcenG[ig][j][1]*rc*u;
      Br=-sr*BcenG[ig][j][1]/2.*rc;
   }
-  if(rc<1.e-10) goto label;
+  if(rc>=1.e-10) {
 //
 // We start here the central series expansion:
-  int nlast = -1;
-  double bcen;
-  for(int n=2; n<=nmax-1; n++)
-  {
-     if(bcoil==true) 
-	 bcen=Bcen[ig][j][n];
-     else
-	 bcen=BcenG[ig][j][n];
-     nlast=n;
-     rcn*=rc;
-     double uPp=u*Pp[n-1];  double uP=u*P[n-1];
-     P[n]=2.*uP-P[n-2] - (uP - P[n-2])*C0[n];
-     Pp[n]=2.*uPp-Pp[n-2] +(uPp - Pp[n-2])*C1[n];
+    int nlast = -1;
+    double bcen;
+    for(int n=2; n<=nmax-1; n++)
+    {
+      if(bcoil==true) 
+    bcen=Bcen[ig][j][n];
+      else
+    bcen=BcenG[ig][j][n];
+      nlast=n;
+      rcn*=rc;
+      double uPp=u*Pp[n-1];  double uP=u*P[n-1];
+      P[n]=2.*uP-P[n-2] - (uP - P[n-2])*C0[n];
+      Pp[n]=2.*uPp-Pp[n-2] +(uPp - Pp[n-2])*C1[n];
 //     P[n]=c1[n]*u*P[n-1]-c2[n]*P[n-2];
 //     Pp[n]=c3[n]*u*Pp[n-1]-c4[n]*Pp[n-2];
-     Bzplus[n]=bcen*rcn*P[n];
-     Brplus[n]=-sr*bcen*c6[n]*rcn*Pp[n];
-     Bz+=Bzplus[n];  Br+=Brplus[n];
-     if(n>5)
-     {
-        double Beps=1.e-15*(fabs(Bz)+fabs(Br));
-        double Bdelta=fabs(Bzplus[n])+fabs(Brplus[n])+fabs(Bzplus[n-1])+fabs(Brplus[n-1])+
-                   fabs(Bzplus[n-2])+fabs(Brplus[n-2])+fabs(Bzplus[n-3])+fabs(Brplus[n-3]);
-        if(Bdelta<Beps || Bdelta<1.e-20) break;
-     }
-  } 
-  if(nlast>=nmax-1 || nlast == -1)
-  {
-     rc=1.;
-     return false; 
+      Bzplus[n]=bcen*rcn*P[n];
+      Brplus[n]=-sr*bcen*c6[n]*rcn*Pp[n];
+      Bz+=Bzplus[n];  Br+=Brplus[n];
+      if(n>5)
+      {
+          double Beps=1.e-15*(fabs(Bz)+fabs(Br));
+          double Bdelta=fabs(Bzplus[n])+fabs(Brplus[n])+fabs(Bzplus[n-1])+fabs(Brplus[n-1])+
+                    fabs(Bzplus[n-2])+fabs(Brplus[n-2])+fabs(Bzplus[n-3])+fabs(Brplus[n-3]);
+          if(Bdelta<Beps || Bdelta<1.e-20) break;
+      }
+    } 
+    if(nlast>=nmax-1 || nlast == -1)
+    {
+      rc=1.;
+      return false; 
+    }
   }
-label: ;
 // Effective central correction for Bz:  
   if(bcoil==true)
   {
@@ -2342,7 +2342,7 @@ double MagfieldCoils::RJ_Carlson(double x,double y,double z,double p)
                C3=3./22.,C4=3./26.,C5=0.75*C3,C6=1.5*C4,C7=0.5*C2,C8=2.*C3;
   double a,alamb,alpha,ans,ave,b,beta,delp,delx,dely,delz,ea,eb,ec,ed,ee,
          fac,pt,rcx,rho,sum,sqrtx,sqrty,sqrtz,tau,xt,yt,zt;
-  rcx = std::numeric_limits<double>::quiet_NaN; // Avoid compiler warning of potentially undeclared variable
+  rcx = std::numeric_limits<double>::quiet_NaN(); // Avoid compiler warning of potentially undeclared variable
   if(FMIN3(x,y,z)<0. || FMIN(FMIN(x+y,x+z),FMIN(y+z,fabs(p)))<TINY ||
       FMAX(FMAX(x,y),FMAX(z,fabs(p)))>BIG)
   {
