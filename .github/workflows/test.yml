@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         use_clang: [true, false]
-        use_opencl: ["ON", "OFF"]
     runs-on: ubuntu-latest
     container: ubuntu:20.04
     steps:
@@ -30,9 +29,6 @@ jobs:
             build-essential cmake cmake-curses-gui \
             libboost-all-dev libfftw3-dev libgsl-dev libhdf5-dev liblog4cxx-dev libomp-dev libopenmpi-dev \
             libsqlite3-dev libssl-dev libvtk7-dev libxml2-dev opencl-headers ocl-icd-opencl-dev zlib1g-dev
-
-        apt update -y && apt install -y \
-             pocl-opencl-icd
     - name: Install root
       run: |
         apt install -y wget
@@ -47,9 +43,7 @@ jobs:
             export CC=/usr/bin/clang
             export CXX=/usr/bin/clang++
         fi
-        KASSIOPEIA_USE_OPENCL=${{ matrix.use_opencl }} \
-        KASSIOPEIA_CUSTOM_CMAKE_ARGS="-DKEMField_OPENCL_DEVICE_TYPE=-1" \
-           ./setup.sh
+        ./setup.sh
       shell: bash
 
     - name: Launch environment and run tests

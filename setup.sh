@@ -29,7 +29,7 @@
 #     KASSIOPEIA_GIT_BRANCH="develop" \
 #     KASSIOPEIA_GIT_COMMIT="6c9dbbf3e" \
 #     KASSIOPEIA_CPUS=4 \
-#     KASSIOPEIA_USE_OPENCL=ON \
+#     KASSIOPEIA_USE_OPENCL="ON" \
 #     ./setup.sh
 
 if [ $# -ne 0 ] ; then

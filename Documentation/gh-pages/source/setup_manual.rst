@@ -82,7 +82,7 @@ build system can be installed through the use of the package manager through the
     apt-get update -y && apt-get install -y \
         build-essential cmake cmake-curses-gui \
         libboost-all-dev libfftw3-dev libgsl-dev libhdf5-dev liblog4cxx-dev libomp-dev libopenmpi-dev \
-        libsqlite3-dev libssl-dev libvtk7-dev libxml2-dev ocl-icd-opencl-dev zlib1g-dev
+        libsqlite3-dev libssl-dev libvtk7-dev libxml2-dev opencl-headers ocl-icd-opencl-dev zlib1g-dev
 
 Tested on Ubuntu Linux 20.04 LTS & 22.04 LTS.
 
@@ -98,7 +98,7 @@ On a RedHat/Fedora Linux system, the packages can be installed through the comma
         root-core root-io-xmlparser root-minuit2 root-spectrum root-genvector  \
         vtk vtk-qt \
         boost-devel fftw-devel gsl-devel hdf5-devel libomp-devel liburing-devel libxml2-devel log4cxx-devel \
-        ocl-icd-devel openmpi-devel openssl-devel sqlite-devel vtk-devel zlib-devel
+        opencl-headers ocl-icd-devel openmpi-devel openssl-devel sqlite-devel vtk-devel zlib-devel
 
 Tested on Fedora Linux 37.
 
