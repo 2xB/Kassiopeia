@@ -11,9 +11,14 @@ class KSCommand;
 class KSComponent : public KSObject
 {
   public:
-    KSComponent();
-    KSComponent(const KSComponent& aCopy);
-    ~KSComponent() override;
+    KSComponent() : KSObject(), fState(eIdle), fParentComponent(nullptr), fChildComponents() {};
+    KSComponent(const KSComponent& aCopy) :
+	    KSObject(aCopy),
+	    fState(aCopy.fState),
+	    fParentComponent(nullptr),
+	    fChildComponents()
+	{};
+    ~KSComponent() override = default;
 
   public:
     KSComponent* Clone() const override = 0;

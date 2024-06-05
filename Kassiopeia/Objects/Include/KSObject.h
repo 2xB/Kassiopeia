@@ -10,9 +10,9 @@ namespace Kassiopeia
 class KSObject : public katrin::KTagged
 {
   public:
-    KSObject();
-    KSObject(const KSObject& aCopy);
-    ~KSObject() override;
+    KSObject() : KTagged(), fHolder(nullptr) {};
+    KSObject(const KSObject& aCopy) : KTagged(aCopy), fHolder(nullptr) {};
+    ~KSObject() override = default;
 
   public:
     virtual KSObject* Clone() const = 0;

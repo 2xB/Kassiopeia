@@ -5,15 +5,6 @@ using namespace std;
 namespace Kassiopeia
 {
 
-KSComponent::KSComponent() : KSObject(), fState(eIdle), fParentComponent(nullptr), fChildComponents() {}
-KSComponent::KSComponent(const KSComponent& aCopy) :
-    KSObject(aCopy),
-    fState(aCopy.fState),
-    fParentComponent(nullptr),
-    fChildComponents()
-{}
-KSComponent::~KSComponent() = default;
-
 void KSComponent::TryInitialize()
 {
     if (!IsInitialized())

@@ -37,7 +37,6 @@ endforeach( BASENAME )
 # source files
 set( OBJECTS_SOURCE_BASENAMES
     KSObjectsMessage.cxx
-    KSObject.cxx
     KSCommand.cxx
     KSCommandGroup.cxx
     KSComponent.cxx
