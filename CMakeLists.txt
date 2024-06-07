@@ -12,6 +12,9 @@ project( Kasper VERSION ${KASPER_VERSION}
                 DESCRIPTION "The KATRIN Analysis and Simulations Package"
                 LANGUAGES CXX C )
 
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
+
 set( BUILD_SHARED_LIBS ON )
 set( Boost_USE_STATIC_LIBS OFF )
 set( Boost_USE_MULTITHREADED ON )
