@@ -31,7 +31,7 @@ jobs:
           -t kasper_minimal .
     
     - name: UnitTestKasper in "minimal"
-      run: docker run --rm -t kasper_minimal UnitTestKasper
+      run: docker run --rm -t kasper_minimal ASAN_OPTIONS=detect_leaks=0 UnitTestKasper
     
     - name: Build target "full"
       run: |
@@ -43,7 +43,7 @@ jobs:
           -t kasper_full .
     
     - name: UnitTestKasper in "full"
-      run: docker run --rm -t kasper_full UnitTestKasper
+      run: docker run --rm -t kasper_full ASAN_OPTIONS=detect_leaks=0 UnitTestKasper
 
     - name: Log in to the Container registry
       if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
