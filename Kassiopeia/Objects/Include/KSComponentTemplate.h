@@ -19,7 +19,7 @@ template<class XThisType, class XFirstParentType>
 class KSComponentTemplate<XThisType, XFirstParentType, void, void> : virtual public KSComponent, public XFirstParentType
 {
   public:
-    KSComponentTemplate()
+    KSComponentTemplate() : KSComponent(), XFirstParentType()
     {
         Set(static_cast<XThisType*>(this));
     }
