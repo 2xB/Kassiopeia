@@ -80,8 +80,7 @@ RUN KASSIOPEIA_BUILD_TYPE="RelWithDebInfo" \
         KASSIOPEIA_INSTALL_PREFIX="/kassiopeia/install" \
         KASSIOPEIA_BUILD_PREFIX="/kassiopeia/build" \
         KASSIOPEIA_MAKECMD="ninja" \
-        KASSIOPEIA_CUSTOM_CMAKE_ARGS="-GNinja" \
-        KASSIOPEIA_CUSTOM_CMAKE_ARGS="-DENABLE_SANITIZE_ADDRESSES=ON" \
+        KASSIOPEIA_CUSTOM_CMAKE_ARGS="-GNinja -DENABLE_SANITIZE_ADDRESSES=ON" \
         /kassiopeia/code/setup.sh && \
     mkdir /kassiopeia/install/log/build && \
     cp /kassiopeia/build/.ninja_log /kassiopeia/install/log/build/ && \
