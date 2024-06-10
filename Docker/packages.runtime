@@ -22,3 +22,5 @@ liburing
 
 git
 gdb
+
+libasan
