@@ -68,11 +68,12 @@ LABEL description="Build container"
 USER $KASSIOPEIA_USER
 
 COPY --chown=$KASSIOPEIA_USER:$KASSIOPEIA_GROUP . /kassiopeia/code
+# VTK_MODULE_USE_EXTERNAL_VTK_nlohmannjson=ON is a workaround for a VTK bug (see https://discourse.vtk.org/t/cmake-error-vtk-nlohmannjson/15170)
 RUN KASSIOPEIA_BUILD_TYPE="RelWithDebInfo" \
         KASSIOPEIA_INSTALL_PREFIX="/kassiopeia/install" \
         KASSIOPEIA_BUILD_PREFIX="/kassiopeia/build" \
         KASSIOPEIA_MAKECMD="ninja" \
-        KASSIOPEIA_CUSTOM_CMAKE_ARGS="-GNinja" \
+        KASSIOPEIA_CUSTOM_CMAKE_ARGS="-GNinja -DVTK_MODULE_USE_EXTERNAL_VTK_nlohmannjson=ON" \
         /kassiopeia/code/setup.sh && \
     mkdir /kassiopeia/install/log/build && \
     cp /kassiopeia/build/.ninja_log /kassiopeia/install/log/build/ && \
