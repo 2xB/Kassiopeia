@@ -3,7 +3,7 @@ cmake_minimum_required( VERSION ${CMAKE_MINIMUM_VERSION} )
 # Kommon version
 set( MODULE_VERSION_MAJOR 1 )
 set( MODULE_VERSION_MINOR 6 )
-set( MODULE_VERSION_PATCH 0 )
+set( MODULE_VERSION_PATCH 1 )
 set( MODULE_VERSION "${MODULE_VERSION_MAJOR}.${MODULE_VERSION_MINOR}.${MODULE_VERSION_PATCH}" )
 
 #project( Kommon VERSION ${MODULE_VERSION} )
@@ -32,11 +32,6 @@ if( KASPER_USE_BOOST )
 endif( KASPER_USE_BOOST )
 
 add_subdirectory( Core )
-if( KASPER_USE_TBB )
-    # NOTE: This is not a separate library, but part of KommonCore. It *must* come after `Core`!
-    add_subdirectory( TBB )
-endif( KASPER_USE_TBB )
-
 add_subdirectory( Binning )
 add_subdirectory( Math )
 

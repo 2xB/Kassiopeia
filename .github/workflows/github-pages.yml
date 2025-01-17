@@ -1,0 +1,59 @@
+name: Build GitHub Pages website
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    # Needed due to PEP 668 to install local packages
+    - name: Create and activate virtual Python environment
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        echo PATH=$PATH >> $GITHUB_ENV
+
+    # Needed since otherwise in the KATRIN repository this fails
+    # (the same does not fail in the main branch of a fork)
+    - name: Install/upgrade setuptools
+      run: pip install --upgrade setuptools
+    
+    - name: Workaround for issue in m2d2 (https://github.com/CrossNox/m2r2/issues/68)
+      run: pip install "docutils>=0.18.1,<0.21"
+
+    - name: Install dependencies
+      run: pip install sphinx_rtd_theme sphinx_design m2r2 sphinx-simplepdf 
+    
+
+    - name: Build target "build"
+      run: cd Documentation/gh-pages && make github
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: 'Documentation/gh-pages/docs'
+
+  # As documented on https://github.com/actions/deploy-pages
+  deploy:
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
