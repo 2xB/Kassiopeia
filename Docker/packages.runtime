@@ -1,7 +1,8 @@
 mesa-dri-drivers
 vtk
 vtk-qt
-json
+json-devel
+json-c-devel
 
 boost-filesystem
 
