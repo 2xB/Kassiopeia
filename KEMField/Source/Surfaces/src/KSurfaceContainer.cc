@@ -52,35 +52,28 @@ void KSurfaceContainer::push_back(KSurfacePrimitive* aSurface)
 
 KSurfacePrimitive* KSurfaceContainer::FirstSurfaceType(unsigned int i) const
 {
-    return (i < fSurfaceData->size() ? fSurfaceData->at(i)->at(0) : nullptr);
+    if (i >= fSurfaceData->size()) {
+        throw KEMSimpleException("KSurfaceContainer::FirstSurfaceType: Could not find element number " + std::to_string(i) + " in surface container of size " + std::to_string(fSurfaceData->size()));
+    }
+
+    return fSurfaceData->at(i)->at(0);
 }
 
 KSurfacePrimitive* KSurfaceContainer::operator[](const unsigned int& i) const
 {
-    unsigned int j = i;
     auto surfaceDataIt = fSurfaceData->begin();
+    auto j = i;
     for (; surfaceDataIt != fSurfaceData->end(); ++surfaceDataIt) {
-        if (j >= (*surfaceDataIt)->size())
-            j -= (*surfaceDataIt)->size();
-        else {
-            KSurfaceArrayCIt surfaceArrayIt = (*surfaceDataIt)->begin();
-            std::advance(surfaceArrayIt, j);
-            return *surfaceArrayIt;
+        if (j >= (*surfaceDataIt)->size()) {
+            j -= (*surfaceDataIt)->size(); // effectively add next array incides behind previous arrays
+            continue;
         }
-    }
-    return nullptr;
 
-    // unsigned int j=i;
-    // unsigned int size;
-    // for (unsigned int k=0;k<fSurfaceData->size();k++)
-    // {
-    //   size = fSurfaceData->at(k)->size();
-    //   if (j>=size)
-    // 	j-=size;
-    //   else
-    // 	return (fSurfaceData->at(k)->at(j));
-    // }
-    // return NULL;
+        KSurfaceArrayCIt surfaceArrayIt = (*surfaceDataIt)->begin();
+        std::advance(surfaceArrayIt, j);
+        return *surfaceArrayIt;
+    }
+    throw KEMSimpleException("KSurfaceContainer::operator[] (no policy): Could not find element number " + std::to_string(i) + " in surface container.");
 }
 
 unsigned int KSurfaceContainer::size() const

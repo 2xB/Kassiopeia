@@ -2,6 +2,7 @@
 #define KSURFACECONTAINER_DEF
 
 #include "KSurface.hh"
+#include "KEMSimpleException.hh"
 
 #include <vector>
 #include <memory>
@@ -285,13 +286,20 @@ template<class BoundaryPolicy, class ShapePolicy> KSurfacePrimitive* KSurfaceCon
     int boundaryPolicy = IndexOf<KBoundaryTypes, BoundaryPolicy>::value;
     int shapePolicy = IndexOf<KShapeTypes, ShapePolicy>::value;
 
-    for (auto it : *fSurfaceData)
-        if (it->size() != 0)
-            if (it->operator[](0)->GetID().BoundaryID == boundaryPolicy &&
-                it->operator[](0)->GetID().ShapeID == shapePolicy)
-                if (it->size() > i)
-                    return it->at(i);
-    return nullptr;
+    for (auto it : *fSurfaceData) {
+        if (it->operator[](0)->GetID().BoundaryID != boundaryPolicy ||
+            it->operator[](0)->GetID().ShapeID != shapePolicy) {
+            continue;
+        }
+
+        if (it->size() <= i) {
+            throw KEMSimpleException("KSurfaceContainer::operator[] (no basis policy): Could not find element number " + std::to_string(i) + " in surface container of size " + std::to_string(it->size()));
+        }
+
+        return it->at(i);
+    }
+
+    throw KEMSimpleException("KSurfaceContainer::operator[] (no basis policy): Could not find element number " + std::to_string(i) + " in surface container.");
 }
 
 template<class Policy> KSurfacePrimitive* KSurfaceContainer::operator[](unsigned int i) const
@@ -300,22 +308,24 @@ template<class Policy> KSurfacePrimitive* KSurfaceContainer::operator[](unsigned
     int boundaryPolicy = IndexOf<KBoundaryTypes, Policy>::value;
     int shapePolicy = IndexOf<KShapeTypes, Policy>::value;
 
-    unsigned int j = i;
+    auto j = i;
     for (auto it : *fSurfaceData) {
-        if (it->size() != 0) {
-            if (it->operator[](0)->GetID().BasisID == basisPolicy ||
-                it->operator[](0)->GetID().BoundaryID == boundaryPolicy ||
-                it->operator[](0)->GetID().ShapeID == shapePolicy) {
-                if (it->size() < j) {
-                    return it->at(j);
-                }
-                else {
-                    j -= it->size();
-                }
-            }
+        // Only one of the policies needs to match (as in size())
+        if (it->operator[](0)->GetID().BasisID != basisPolicy &&
+            it->operator[](0)->GetID().BoundaryID != boundaryPolicy &&
+            it->operator[](0)->GetID().ShapeID != shapePolicy) {
+            continue;
         }
+
+        if (it->size() <= i) {
+            j -= it->size();
+            throw KEMSimpleException("KSurfaceContainer::operator[] (with basis policy): Could not find element number " + std::to_string(i) + " in surface container of size " + std::to_string(it->size()));
+        }
+
+        return it->at(i);
     }
-    return nullptr;
+
+    throw KEMSimpleException("KSurfaceContainer::operator[] (with basis policy): Could not find element number " + std::to_string(i) + " in surface container.");
 }
 
 template<class BoundaryPolicy, class ShapePolicy> unsigned int KSurfaceContainer::size() const

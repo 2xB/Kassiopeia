@@ -48,6 +48,7 @@ target_link_libraries (KEMSurfaces
         KEMCore
         KEMMath
         KEMIO
+        KEMFieldExceptions
 )
 
 kasper_install_headers (${SURFACES_HEADERFILES})
