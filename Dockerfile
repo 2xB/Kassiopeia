@@ -28,7 +28,7 @@ RUN dnf update -y \
 # Based on https://github.com/lukin0110/docker-vtk-python/blob/master/Dockerfile
 
 RUN mkdir /tmpbuild
-RUN cd /tmpbuild && wget https://gitlab.kitware.com/2xB/vtk/-/archive/2xB/runtime_error/vtk-2xB-runtime_error.tar.gz && tar -zxvf vtk-2xB-runtime_error.tar.gz
+RUN cd /tmpbuild && wget https://gitlab.kitware.com/vtk/vtk/-/archive/master/vtk-master.tar.gz && tar -zxvf vtk-2xB-runtime_error.tar.gz
 RUN mkdir /vtk-build
 RUN cd /vtk-build/ && cmake \
   -DCMAKE_BUILD_TYPE:STRING=Release \
