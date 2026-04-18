@@ -52,11 +52,11 @@ class FixtureWrapper : public Fixture
 #define EXPECT_THROW(statement, exception_type) CHECK_THROWS_AS(statement, exception_type)
 #define ASSERT_THROW(statement, exception_type) REQUIRE_THROWS_AS(statement, exception_type)
 #define ASSERT_ANY_THROW(statement) REQUIRE_THROWS(statement)
-// doctest does not provide a direct death-test equivalent with regex matching.
-// The regex argument is intentionally ignored for compatibility with existing test calls.
-#define ASSERT_DEATH(statement, regex)                                                                  \
+// doctest does not provide a direct death-test equivalent.
+// This compatibility macro checks that the statement throws.
+// Use do/while(false) so the macro behaves like a single statement in all call sites.
+#define ASSERT_DEATH(statement)                                                                         \
     do {                                                                                                \
-        (void) (regex);                                                                                 \
         REQUIRE_THROWS(statement);                                                                      \
     } while (false)
 
@@ -134,8 +134,6 @@ class TimeoutTest
         signal_intr(SIGALRM, SIG_IGN);
         signal_intr(SIGALRM, acceptAlarm);
         alarm(GetTimeoutSeconds());
-        // doctest does not expose
-        // the current test name in this signal-handler context.
         FAIL("ALARM: Timeout on test (signal " << signalVal << ")");
     }
 
