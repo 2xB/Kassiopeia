@@ -134,7 +134,7 @@ class TimeoutTest
         signal_intr(SIGALRM, SIG_IGN);
         signal_intr(SIGALRM, acceptAlarm);
         alarm(GetTimeoutSeconds());
-        // Unlike gtest::UnitTest::GetInstance()->current_test_info(), doctest does not expose
+        // doctest does not expose
         // the current test name in this signal-handler context.
         FAIL("ALARM: Timeout on test (signal " << signalVal << ")");
     }
