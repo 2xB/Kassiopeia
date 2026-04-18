@@ -80,11 +80,11 @@ class FixtureWrapper : public Fixture
 
 /* Some additional macros for certain value checks in unit tests */
 
-#define EXPECT_PTR(p) EXPECT_FALSE((p) == NULL)
-#define ASSERT_PTR(p) ASSERT_FALSE((p) == NULL)
+#define EXPECT_PTR(p) EXPECT_TRUE((p) != nullptr)
+#define ASSERT_PTR(p) ASSERT_TRUE((p) != nullptr)
 
-#define EXPECT_NULL(p) EXPECT_TRUE((p) == NULL)
-#define ASSERT_NULL(p) ASSERT_TRUE((p) == NULL)
+#define EXPECT_NULL(p) EXPECT_TRUE((p) == nullptr)
+#define ASSERT_NULL(p) ASSERT_TRUE((p) == nullptr)
 
 #define EXPECT_STRING_EQ(a, b) EXPECT_EQ(std::string(a), std::string(b))
 #define ASSERT_STRING_EQ(a, b) ASSERT_EQ(std::string(a), std::string(b))
