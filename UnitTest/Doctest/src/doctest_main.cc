@@ -18,7 +18,7 @@ class TestCaseProgressListener : public doctest::IReporter
             return;
 
         fCurrentTest = in.m_name;
-        (*fOptions.cout) << "[ RUN      ] " << fCurrentTest << '\n';
+        (*fOptions.cout) << "[ RUN       ] " << fCurrentTest << '\n';
     }
 
     void test_case_reenter(const doctest::TestCaseData&) override {}
@@ -28,7 +28,7 @@ class TestCaseProgressListener : public doctest::IReporter
         if (!Enabled() || fCurrentTest.empty())
             return;
 
-        (*fOptions.cout) << (in.testCaseSuccess ? "[       OK ] " : "[  FAILED  ] ") << fCurrentTest << '\n';
+        (*fOptions.cout) << (in.testCaseSuccess ? "[ OK        ] " : "[ FAILED    ] ") << fCurrentTest << '\n';
         fCurrentTest.clear();
     }
 
@@ -43,7 +43,7 @@ class TestCaseProgressListener : public doctest::IReporter
         if (!Enabled() || in.m_no_output)
             return;
 
-        (*fOptions.cout) << "[  SKIPPED ] " << in.m_name << '\n';
+        (*fOptions.cout) << "[ SKIPPED   ] " << in.m_name << '\n';
     }
 
   private:
