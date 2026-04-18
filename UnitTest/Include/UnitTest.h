@@ -52,13 +52,6 @@ class FixtureWrapper : public Fixture
 #define EXPECT_THROW(statement, exception_type) CHECK_THROWS_AS(statement, exception_type)
 #define ASSERT_THROW(statement, exception_type) REQUIRE_THROWS_AS(statement, exception_type)
 #define ASSERT_ANY_THROW(statement) REQUIRE_THROWS(statement)
-// doctest does not provide a direct death-test equivalent.
-// This compatibility macro checks that the statement throws.
-// Use do/while(false) so the macro behaves like a single statement in all call sites.
-#define ASSERT_DEATH(statement)                                                                         \
-    do {                                                                                                \
-        REQUIRE_THROWS(statement);                                                                      \
-    } while (false)
 
 /* Some useful macros to access values from numeric_limits */
 
