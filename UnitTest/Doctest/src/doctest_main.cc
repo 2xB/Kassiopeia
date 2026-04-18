@@ -57,7 +57,7 @@ class TestCaseProgressListener : public doctest::IReporter
 };
 }  // namespace
 
-REGISTER_LISTENER("kassiopeia-progress-listener", 1, TestCaseProgressListener);
+REGISTER_LISTENER("test-progress-listener", 1, TestCaseProgressListener);
 
 int main(int argc, char** argv)
 {
