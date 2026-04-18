@@ -4,6 +4,7 @@
 #include "doctest/doctest.h"
 #include <csignal>
 #include <cmath>
+#include <unistd.h>
 
 namespace kasper_unittest
 {
