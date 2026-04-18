@@ -135,8 +135,7 @@ class TimeoutTest
         alarm(GetTimeoutSeconds());
         // Unlike gtest::UnitTest::GetInstance()->current_test_info(), doctest does not expose
         // the current test name in this signal-handler context.
-        MESSAGE("ALARM: Timeout on test (signal " << signalVal << ")");
-        FAIL("ALARM: Timeout");
+        FAIL("ALARM: Timeout on test (signal " << signalVal << ")");
     }
 
     virtual void SetUp()
