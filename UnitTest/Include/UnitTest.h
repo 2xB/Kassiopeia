@@ -15,7 +15,7 @@ class FixtureWrapper : public Fixture
     {
         this->SetUp();
     }
-    ~FixtureWrapper() override
+    ~FixtureWrapper()
     {
         this->TearDown();
     }
@@ -51,7 +51,13 @@ class FixtureWrapper : public Fixture
 #define EXPECT_THROW(statement, exception_type) CHECK_THROWS_AS(statement, exception_type)
 #define ASSERT_THROW(statement, exception_type) REQUIRE_THROWS_AS(statement, exception_type)
 #define ASSERT_ANY_THROW(statement) REQUIRE_THROWS(statement)
-#define ASSERT_DEATH(statement, regex) REQUIRE_THROWS(statement)
+// doctest does not provide a direct death-test equivalent with regex matching.
+// The regex argument is intentionally ignored for compatibility with existing test calls.
+#define ASSERT_DEATH(statement, regex)                                                                  \
+    do {                                                                                                \
+        (void) (regex);                                                                                 \
+        REQUIRE_THROWS(statement);                                                                      \
+    } while (false)
 
 /* Some useful macros to access values from numeric_limits */
 
@@ -127,7 +133,10 @@ class TimeoutTest
         signal_intr(SIGALRM, SIG_IGN);
         signal_intr(SIGALRM, acceptAlarm);
         alarm(GetTimeoutSeconds());
-        FAIL("ALARM: Timeout on test (signal " << signalVal << ")");
+        // Unlike gtest::UnitTest::GetInstance()->current_test_info(), doctest does not expose
+        // the current test name in this signal-handler context.
+        MESSAGE("ALARM: Timeout on test (signal " << signalVal << ")");
+        FAIL("ALARM: Timeout");
     }
 
     virtual void SetUp()

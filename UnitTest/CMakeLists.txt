@@ -33,7 +33,7 @@ target_include_directories( UnitTestBase INTERFACE
 )
 kasper_install_libraries( UnitTestBase )
 
-set(GTEST_MAIN_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/Doctest/src/doctest_main.cc)
+set(DOCTEST_MAIN_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/Doctest/src/doctest_main.cc)
 
 ## Kasper sub-modules
 
