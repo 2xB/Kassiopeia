@@ -4,6 +4,7 @@
 enable_testing()
 
 set (UNIT_TESTS_SOURCEFILES
+    AssertionFailures.cxx
     Math.cxx
     Integrator.cxx
     KComplexElement.cxx
