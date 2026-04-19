@@ -110,8 +110,9 @@ template<typename T, unsigned int U = 0> class KSAObjectInputNode : public KSAIn
 //special case, T inherits from KSAFixedSizeInputOutputObject
 template<typename T> class KSAObjectInputNode<T, 1> : public KSAInputNode
 {
-
   public:
+    using KSAInputNode::AddChild;
+
     KSAObjectInputNode(const std::string& name) : KSAInputNode(name)
     {
         fIndex = 0;
@@ -335,8 +336,9 @@ template<typename T, unsigned int U = 0> class KSAExternalObjectInputNode : publ
 //special case, T inherits from KSAFixedSizeInputOutputObject
 template<typename T> class KSAExternalObjectInputNode<T, 1> : public KSAInputNode
 {
-
   public:
+    using KSAInputNode::AddChild;
+
     KSAExternalObjectInputNode(const std::string& name) : KSAInputNode(name)
     {
         fIndex = 0;
@@ -769,6 +771,8 @@ template<typename T> class KSAObjectInputNode<std::vector<T>> : public KSAInputN
 template<typename T> class KSAObjectInputNode<std::vector<T*>> : public KSAInputNode
 {
   public:
+    using KSAInputNode::AddChild;
+
     KSAObjectInputNode(const std::string& name) : KSAInputNode(name)
     {
         fObject = new std::vector<T*>();
