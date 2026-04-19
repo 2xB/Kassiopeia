@@ -637,6 +637,8 @@ class KSAAssociatedAllocatedToVectorPointerExternalObjectInputNode :
 template<typename T> class KSAObjectInputNode<std::vector<T>> : public KSAInputNode
 {
   public:
+    using KSAInputNode::AddChild;
+    
     KSAObjectInputNode(const std::string& name) : KSAInputNode(name)
     {
         fObject = new std::vector<T>();
