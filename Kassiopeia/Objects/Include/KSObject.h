@@ -54,7 +54,7 @@ class KSObject : public katrin::KTagged
         XType* fObject;
     };
 
-    mutable std::unique_ptr<KSHolder> fHolder;
+    mutable std::unique_ptr<KSHolder> fHolder = nullptr;
 };
 
 inline KSObject::KSHolder::KSHolder() = default;
@@ -70,6 +70,9 @@ template<class XType> inline void KSObject::KSHolderTemplate<XType>::Type()
 
 template<class XType> inline bool KSObject::Is()
 {
+    if(!fHolder) {
+        return false;
+    }
     try {
         fHolder->Type();
     }
@@ -88,6 +91,9 @@ template<> inline bool KSObject::Is<KSObject>()
 
 template<class XType> inline bool KSObject::Is() const
 {
+    if(!fHolder) {
+        return false;
+    }
     try {
         fHolder->Type();
     }
@@ -106,6 +112,9 @@ template<> inline bool KSObject::Is<KSObject>() const
 
 template<class XType> inline XType* KSObject::As()
 {
+    if(!fHolder) {
+        return nullptr;
+    }
     try {
         fHolder->Type();
     }
@@ -124,6 +133,9 @@ template<> inline KSObject* KSObject::As<KSObject>()
 
 template<class XType> inline const XType* KSObject::As() const
 {
+    if(!fHolder) {
+        return nullptr;
+    }
     try {
         fHolder->Type();
     }
