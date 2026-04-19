@@ -10,7 +10,7 @@ ARG KASSIOPEIA_GIT_COMMIT=""
 ARG KASSIOPEIA_CPUS=""
 
 # --- runtime-base ---
-FROM fedora:40 as runtime-base
+FROM fedora:41 as runtime-base
 ARG KASSIOPEIA_UID
 ARG KASSIOPEIA_USER
 ARG KASSIOPEIA_GID
@@ -23,6 +23,21 @@ RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
  && rm /packages \
  && dnf clean all
+
+# Build VTK for testing purposes
+# Based on https://github.com/lukin0110/docker-vtk-python/blob/master/Dockerfile
+
+RUN mkdir /tmpbuild
+RUN cd /tmpbuild && wget https://gitlab.kitware.com/vtk/vtk/-/archive/master/vtk-master.tar.gz && tar -zxvf vtk-master.tar.gz
+RUN mkdir /vtk-build
+RUN cd /vtk-build/ && cmake \
+  -DCMAKE_BUILD_TYPE:STRING=Release \
+  -DBUILD_TESTING:BOOL=OFF \
+  -DVTK_WRAP_TCL:BOOL=ON \
+  -DVTK_USE_TK:BOOL=ON \
+  /tmpbuild/vtk-master
+RUN cd /vtk-build/ && make -j$(nproc) install
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib:/vtk-build/lib
 
 # Setting user
 # Compare:
