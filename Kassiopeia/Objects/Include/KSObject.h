@@ -154,7 +154,7 @@ template<> inline const KSObject* KSObject::As<KSObject>() const
 
 template<class XType> inline void KSObject::Set(XType* anObject)
 {
-    fHolder = std::make_unique<KSHolderTemplate<XType>>(anObject);
+    fHolder.reset(new KSHolderTemplate<XType>(anObject));
 }
 
 }  // namespace Kassiopeia
