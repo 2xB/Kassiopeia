@@ -57,6 +57,9 @@ class KSObject : public katrin::KTagged
     mutable std::unique_ptr<KSHolder> fHolder = nullptr;
 };
 
+inline KSObject::KSObject() : KTagged(), fHolder(nullptr) {}
+inline KSObject::KSObject(const KSObject& aCopy) : KTagged(aCopy), fHolder(nullptr) {}
+
 inline KSObject::KSHolder::KSHolder() = default;
 inline KSObject::KSHolder::~KSHolder() = default;
 
