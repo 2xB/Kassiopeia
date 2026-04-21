@@ -54,7 +54,7 @@ class KSObject : public katrin::KTagged
         XType* fObject;
     };
 
-    mutable std::unique_ptr<KSHolder> fHolder = nullptr;
+    mutable std::unique_ptr<KSHolder> fHolder;
 };
 
 inline KSObject::KSObject() : KTagged(), fHolder(nullptr) {}
