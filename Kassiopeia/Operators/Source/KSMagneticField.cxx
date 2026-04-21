@@ -3,7 +3,7 @@
 namespace Kassiopeia
 {
 
-KSMagneticField::KSMagneticField() : KSComponent(), KSComponentTemplate<KSMagneticField>() {}
+KSMagneticField::KSMagneticField() = default;
 
 KSMagneticField::~KSMagneticField() = default;
 

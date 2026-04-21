@@ -6,7 +6,7 @@ using katrin::KThreeVector;
 namespace Kassiopeia
 {
 
-KSElectricField::KSElectricField() : KSComponent(), KSComponentTemplate<KSElectricField>() {}
+KSElectricField::KSElectricField() = default;
 
 KSElectricField::~KSElectricField() = default;
 
