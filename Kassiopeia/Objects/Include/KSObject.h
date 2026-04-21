@@ -11,6 +11,8 @@ namespace Kassiopeia
 #if defined(__GNUC__) || defined(__clang__)
 // GCC 15 can report a false -Wuninitialized path when this template is inlined into
 // component constructors; keep Set(...) out-of-line at call sites to avoid that path.
+// Found with Set<...>(this) in the constructor of KSMagneticField, where "this" being
+// potentially not fully initialized caused the above issue.
 #define KSOBJECT_NOINLINE __attribute__((noinline))
 #else
 #define KSOBJECT_NOINLINE
@@ -62,11 +64,8 @@ class KSObject : public katrin::KTagged
         XType* fObject;
     };
 
-    mutable std::unique_ptr<KSHolder> fHolder;
+    mutable std::unique_ptr<KSHolder> fHolder = nullptr;
 };
-
-inline KSObject::KSObject() : KTagged(), fHolder(nullptr) {}
-inline KSObject::KSObject(const KSObject& aCopy) : KTagged(aCopy), fHolder(nullptr) {}
 
 inline KSObject::KSHolder::KSHolder() = default;
 inline KSObject::KSHolder::~KSHolder() = default;
@@ -165,8 +164,9 @@ template<> inline const KSObject* KSObject::As<KSObject>() const
 
 template<class XType> KSOBJECT_NOINLINE void KSObject::Set(XType* anObject)
 {
-    // Keep reset semantics unchanged while preserving the noinline workaround above.
-    fHolder.reset(new KSHolderTemplate<XType>(anObject));
+    auto* tHolder = new KSHolderTemplate<XType>(anObject);
+    fHolder = std::unique_ptr<KSHolder>(tHolder);
+    return;
 }
 
 }  // namespace Kassiopeia
