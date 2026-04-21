@@ -12,6 +12,7 @@
 #include "TStyle.h"
 
 #include <cmath>
+#include <vector>
 
 namespace KEMField
 {
@@ -68,12 +69,13 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
 
         _ret = fscanf(inputfull, "%i", &NconicSect);
 
-        TLine* eline[NconicSect];
+        size_t nConicSect = NconicSect > 0 ? static_cast<size_t>(NconicSect) : 0;
+        std::vector<TLine*> eline(nConicSect);
 
-        double ex_0[NconicSect];
-        double ey_0[NconicSect];
-        double ex_1[NconicSect];
-        double ey_1[NconicSect];
+        std::vector<double> ex_0(nConicSect);
+        std::vector<double> ey_0(nConicSect);
+        std::vector<double> ex_1(nConicSect);
+        std::vector<double> ey_1(nConicSect);
         double temp1;
         int temp2;
 
@@ -126,13 +128,14 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
 
         _ret = fscanf(inputwire, "%i", &Nwire);
 
-        TLine* wline[Nwire];
+        size_t nWire = Nwire > 0 ? static_cast<size_t>(Nwire) : 0;
+        std::vector<TLine*> wline(nWire);
 
-        double wx_0[Nwire];
-        double wy_0[Nwire];
-        double wx_1[Nwire];
-        double wy_1[Nwire];
-        double wd[Nwire];
+        std::vector<double> wx_0(nWire);
+        std::vector<double> wy_0(nWire);
+        std::vector<double> wx_1(nWire);
+        std::vector<double> wy_1(nWire);
+        std::vector<double> wd(nWire);
         double temp3;
         int temp4;
         double temp5;
@@ -199,12 +202,13 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
 
         _ret = fscanf(inputcoil, "%i", &Ncoil);
 
-        TBox* box[Ncoil];
+        size_t nCoil = Ncoil > 0 ? static_cast<size_t>(Ncoil) : 0;
+        std::vector<TBox*> box(nCoil);
 
-        double z_mid[Ncoil];
-        double r_min[Ncoil];
-        double r_thk[Ncoil];
-        double z_len[Ncoil];
+        std::vector<double> z_mid(nCoil);
+        std::vector<double> r_min(nCoil);
+        std::vector<double> r_thk(nCoil);
+        std::vector<double> z_len(nCoil);
         double temp;
 
         for (int j = 0; j < Ncoil; j++) {
@@ -250,12 +254,13 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
 
         _ret = fscanf(inputfull, "%i", &NconicSect);
 
-        TEllipse* e[NconicSect];
+        size_t nConicSect = NconicSect > 0 ? static_cast<size_t>(NconicSect) : 0;
+        std::vector<TEllipse*> e(nConicSect);
 
-        double ez_0[NconicSect];
-        double er_0[NconicSect];
-        double ez_1[NconicSect];
-        double er_1[NconicSect];
+        std::vector<double> ez_0(nConicSect);
+        std::vector<double> er_0(nConicSect);
+        std::vector<double> ez_1(nConicSect);
+        std::vector<double> er_1(nConicSect);
         double temp1;
         int temp2;
 
@@ -286,15 +291,16 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
 
         _ret = fscanf(inputwire, "%i", &Nwire);
 
-        TEllipse* w[Nwire];
+        size_t nWire = Nwire > 0 ? static_cast<size_t>(Nwire) : 0;
+        std::vector<TEllipse*> w(nWire);
 
-        double wz_0[Nwire];
-        double wr_0[Nwire];
-        double wz_1[Nwire];
-        double wr_1[Nwire];
-        double wd[Nwire];
-        double phi[Nwire];
-        int numwire[Nwire];
+        std::vector<double> wz_0(nWire);
+        std::vector<double> wr_0(nWire);
+        std::vector<double> wz_1(nWire);
+        std::vector<double> wr_1(nWire);
+        std::vector<double> wd(nWire);
+        std::vector<double> phi(nWire);
+        std::vector<int> numwire(nWire);
         double temp5;
         int temp6;
 
@@ -353,12 +359,13 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
 
         _ret = fscanf(inputcoil, "%i", &Ncoil);
 
-        TEllipse* coil[Ncoil];
+        size_t nCoil = Ncoil > 0 ? static_cast<size_t>(Ncoil) : 0;
+        std::vector<TEllipse*> coil(nCoil);
 
-        double z_mid[Ncoil];
-        double r_min[Ncoil];
-        double r_thk[Ncoil];
-        double z_len[Ncoil];
+        std::vector<double> z_mid(nCoil);
+        std::vector<double> r_min(nCoil);
+        std::vector<double> r_thk(nCoil);
+        std::vector<double> z_len(nCoil);
         double temp;
 
         for (int j = 0; j < Ncoil; j++) {
@@ -458,7 +465,8 @@ void KEMRootFieldCanvas::DrawFieldLines(const std::vector<double>& x, const std:
 {
     int nLineSegs = x.size() - 1;
 
-    TLine* fl[nLineSegs];
+    size_t nLineSegsSize = nLineSegs > 0 ? static_cast<size_t>(nLineSegs) : 0;
+    std::vector<TLine*> fl(nLineSegsSize);
 
     for (int n = 0; n < nLineSegs; n++) {
         fl[n] = new TLine(x[n], y[n], x[n + 1], y[n + 1]);
