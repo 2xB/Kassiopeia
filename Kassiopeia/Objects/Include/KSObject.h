@@ -8,6 +8,12 @@
 namespace Kassiopeia
 {
 
+#if defined(__GNUC__) || defined(__clang__)
+#define KSOBJECT_NOINLINE __attribute__((noinline))
+#else
+#define KSOBJECT_NOINLINE
+#endif
+
 class KSObject : public katrin::KTagged
 {
   public:
@@ -28,7 +34,7 @@ class KSObject : public katrin::KTagged
     template<class XType> const XType* As() const;
 
   protected:
-    template<class XType> void Set(XType*);
+    template<class XType> KSOBJECT_NOINLINE void Set(XType*);
 
   private:
     class KSHolder
@@ -155,11 +161,13 @@ template<> inline const KSObject* KSObject::As<KSObject>() const
     return this;
 }
 
-template<class XType> inline void KSObject::Set(XType* anObject)
+template<class XType> KSOBJECT_NOINLINE inline void KSObject::Set(XType* anObject)
 {
     fHolder.reset(new KSHolderTemplate<XType>(anObject));
 }
 
 }  // namespace Kassiopeia
+
+#undef KSOBJECT_NOINLINE
 
 #endif
