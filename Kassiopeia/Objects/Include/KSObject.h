@@ -161,7 +161,7 @@ template<> inline const KSObject* KSObject::As<KSObject>() const
     return this;
 }
 
-template<class XType> KSOBJECT_NOINLINE inline void KSObject::Set(XType* anObject)
+template<class XType> KSOBJECT_NOINLINE void KSObject::Set(XType* anObject)
 {
     fHolder.reset(new KSHolderTemplate<XType>(anObject));
 }
