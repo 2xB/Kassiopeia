@@ -9,6 +9,8 @@ namespace Kassiopeia
 {
 
 #if defined(__GNUC__) || defined(__clang__)
+// GCC 15 can report a false -Wuninitialized path when this template is inlined into
+// component constructors; keep Set(...) out-of-line at call sites to avoid that path.
 #define KSOBJECT_NOINLINE __attribute__((noinline))
 #else
 #define KSOBJECT_NOINLINE
@@ -163,6 +165,7 @@ template<> inline const KSObject* KSObject::As<KSObject>() const
 
 template<class XType> KSOBJECT_NOINLINE void KSObject::Set(XType* anObject)
 {
+    // Keep reset semantics unchanged while preserving the noinline workaround above.
     fHolder.reset(new KSHolderTemplate<XType>(anObject));
 }
 
