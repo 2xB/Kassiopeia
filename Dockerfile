@@ -10,7 +10,7 @@ ARG KASSIOPEIA_GIT_COMMIT=""
 ARG KASSIOPEIA_CPUS=""
 
 # --- runtime-base ---
-FROM fedora:44 as runtime-base
+FROM fedora:43 as runtime-base
 ARG KASSIOPEIA_UID
 ARG KASSIOPEIA_USER
 ARG KASSIOPEIA_GID
@@ -21,6 +21,9 @@ LABEL description="Runtime base container"
 COPY Docker/packages.runtime packages
 RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
+ && dnf install fedora-repos-archive.noarch \
+ && dnf config-manager setopt updates-archive.enabled=0 \
+ && dnf downgrade 'mesa*25.1.4*' --enablerepo updates-archive \
  && rm /packages \
  && dnf clean all
 
