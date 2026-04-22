@@ -69,11 +69,11 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
         int _ret = fscanf(inputfull, "%i", &NconicSect);
 
         if (_ret != 1) {
-            throw runtime_error("Could not read NconicSect");
+            throw std::runtime_error("Could not read NconicSect");
         }
 
         if (NconicSect < 0) {
-            throw runtime_error("NconicSect must be positive");
+            throw std::runtime_error("NconicSect must be positive");
         }
 
         size_t nConicSect = static_cast<size_t>(NconicSect);
@@ -90,7 +90,7 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
             int _ret = fscanf(inputfull, "%le %le %le %le %le %i", &ex_0[s], &ey_0[s], &ex_1[s], &ey_1[s], &temp1, &temp2);
 
             if (_ret < 4 || _ret > 6) {
-                throw runtime_error("Could not read conic section");
+                throw std::runtime_error("Could not read conic section");
             }
 
             eline[s] = new TLine(ex_0[s], ey_0[s], ex_1[s], ey_1[s]);
@@ -141,11 +141,11 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
         int _ret = fscanf(inputwire, "%i", &Nwire);
 
         if (_ret != 1) {
-            throw runtime_error("Could not read Nwire");
+            throw std::runtime_error("Could not read Nwire");
         }
 
         if (Nwire < 0) {
-            throw runtime_error("Nwire must be positive");
+            throw std::runtime_error("Nwire must be positive");
         }
 
         size_t nWire = static_cast<size_t>(Nwire);
@@ -175,7 +175,7 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
                           &temp6);
             
             if (_ret < 5 || _ret > 9) {
-                throw runtime_error("Could not read wire");
+                throw std::runtime_error("Could not read wire");
             }
 
             wline[s] = new TLine(wx_0[s], wy_0[s], wx_1[s], wy_1[s]);
@@ -228,11 +228,11 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
         int _ret = fscanf(inputcoil, "%i", &Ncoil);
 
         if (_ret != 1) {
-            throw runtime_error("Could not read Ncoil");
+            throw std::runtime_error("Could not read Ncoil");
         }
 
         if (Ncoil < 0) {
-            throw runtime_error("Ncoil must be positive");
+            throw std::runtime_error("Ncoil must be positive");
         }
 
         size_t nCoil = static_cast<size_t>(Ncoil);
@@ -248,7 +248,7 @@ void KEMRootFieldCanvas::DrawGeomRZ(const std::string& conicSectfile, const std:
             int _ret = fscanf(inputcoil, "%le %le %le %le %le ", &z_mid[j], &r_min[j], &r_thk[j], &z_len[j], &temp);
             
             if (_ret < 4 || _ret > 5) {
-                throw runtime_error("Could not read coil");
+                throw std::runtime_error("Could not read coil");
             }
             
             box[j] = new TBox((z_mid[j] - z_len[j] / 2), r_min[j], (z_mid[j] + z_len[j] / 2), (r_min[j] + r_thk[j]));
@@ -291,11 +291,11 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
         int _ret = fscanf(inputfull, "%i", &NconicSect);
 
         if (_ret != 1) {
-            throw runtime_error("Could not read NconicSect");
+            throw std::runtime_error("Could not read NconicSect");
         }
 
         if (NconicSect < 0) {
-            throw runtime_error("NconicSect must be positive");
+            throw std::runtime_error("NconicSect must be positive");
         }
 
         size_t nConicSect = static_cast<size_t>(NconicSect);
@@ -312,7 +312,7 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
             int _ret = fscanf(inputfull, "%le %le %le %le %le %i", &ez_0[s], &er_0[s], &ez_1[s], &er_1[s], &temp1, &temp2);
 
             if (_ret < 4 || _ret > 6) {
-                throw runtime_error("Could not read conic section");
+                throw std::runtime_error("Could not read conic section");
             }
 
             if (ez_0[s] < z && ez_1[s] > z) {
@@ -340,11 +340,11 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
         int _ret = fscanf(inputwire, "%i", &Nwire);
 
         if (_ret != 1) {
-            throw runtime_error("Could not read Nwire");
+            throw std::runtime_error("Could not read Nwire");
         }
 
         if (Nwire < 0) {
-            throw runtime_error("Nwire must be positive");
+            throw std::runtime_error("Nwire must be positive");
         }
 
         size_t nWire = static_cast<size_t>(Nwire);
@@ -374,7 +374,7 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
                           &temp6);
             
             if (_ret < 7 || _ret > 9) {
-                throw runtime_error("Could not read wire");
+                throw std::runtime_error("Could not read wire");
             }
 
             double z_tot = fabs(wz_1[s] - wz_0[s]);
@@ -420,11 +420,11 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
         int _ret = fscanf(inputcoil, "%i", &Ncoil);
 
         if (_ret != 1) {
-            throw runtime_error("Could not read Ncoil");
+            throw std::runtime_error("Could not read Ncoil");
         }
 
         if (Ncoil < 0) {
-            throw runtime_error("Ncoil must be positive");
+            throw std::runtime_error("Ncoil must be positive");
         }
 
         size_t nCoil = static_cast<size_t>(Ncoil);
@@ -440,7 +440,7 @@ void KEMRootFieldCanvas::DrawGeomXY(double z, const std::string& conicSectfile, 
             int _ret = fscanf(inputcoil, "%le %le %le %le %le ", &z_mid[j], &r_min[j], &r_thk[j], &z_len[j], &temp);
             
             if (_ret < 4 || _ret > 5) {
-                throw runtime_error("Could not read coil");
+                throw std::runtime_error("Could not read coil");
             }
             
             if (z_mid[j] + z_len[j] / 2 > z && z_mid[j] - z_len[j] / 2 < z) {
