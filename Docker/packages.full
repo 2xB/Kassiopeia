@@ -13,13 +13,9 @@ python3-jupyroot
 root-graf-gpadv7
 
 dbus-x11
-xfce4
-xfce4-panel
-xfce4-session
-xfce4-settings
-xorg
-xubuntu-icon-theme
-tigervnc-standalone-server
+@xfce-desktop-environment
+@base-x
+tigervnc-server
 
 xmodmap
 xorg-x11-fonts-base
