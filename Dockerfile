@@ -23,12 +23,11 @@ RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
  && mkdir /tmp/scr \
  && cd /tmp/scr \
- && dnf install -y koji \
- && koji download-build --arch=x86_64 --arch=x86_64 mesa-dri-drivers-25.1.4-2.fc43 \
- && koji download-build --arch=x86_64 --arch=x86_64 mesa-filesystem-25.1.4-2.fc43 \
- && koji download-build --arch=x86_64 --arch=x86_64 mesa-libEGL-25.1.4-2.fc43 \
- && koji download-build --arch=x86_64 --arch=x86_64 mesa-libGL-25.1.4-2.fc43 \
- && koji download-build --arch=x86_64 --arch=x86_64 mesa-libgbm-25.1.4-2.fc43 \
+ && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-dri-drivers-25.1.4-2.fc43.x86_64.rpm \
+ && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-filesystem-25.1.4-2.fc43.x86_64.rpm \
+ && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-libEGL-25.1.4-2.fc43.x86_64.rpm \
+ && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-libGL-25.1.4-2.fc43.x86_64.rpm \
+ && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-libgbm-25.1.4-2.fc43.x86_64.rpm \
  && dnf downgrade -y /tmp/scr/*.rpm \
  && rm /packages \
  && dnf clean all
