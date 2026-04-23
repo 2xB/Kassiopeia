@@ -12,7 +12,15 @@ python3-root
 python3-jupyroot
 root-graf-gpadv7
 
-tigervnc-server
+dbus-x11
+xfce4
+xfce4-panel
+xfce4-session
+xfce4-settings
+xorg
+xubuntu-icon-theme
+tigervnc-standalone-server
+
 xmodmap
 xorg-x11-fonts-base
 xterm
@@ -20,7 +28,6 @@ net-tools
 fluxbox
 nodejs
 npm
-novnc
 python3-websockify
 
 nss-pam-ldapd

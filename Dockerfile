@@ -21,15 +21,6 @@ LABEL description="Runtime base container"
 COPY Docker/packages.runtime packages
 RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
- && mkdir /tmp/scr \
- && cd /tmp/scr \
- && dnf install -y wget \
- && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-dri-drivers-25.1.4-2.fc43.x86_64.rpm \
- && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-filesystem-25.1.4-2.fc43.x86_64.rpm \
- && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-libEGL-25.1.4-2.fc43.x86_64.rpm \
- && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-libGL-25.1.4-2.fc43.x86_64.rpm \
- && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-libgbm-25.1.4-2.fc43.x86_64.rpm \
- && dnf downgrade -y /tmp/scr/*.rpm \
  && rm /packages \
  && dnf clean all
 
@@ -144,6 +135,7 @@ RUN dnf update -y \
  && dnf clean all
 RUN pip3 install --no-cache-dir jupyterlab \
  && pip3 install --no-cache-dir jupyter-server-proxy \
+ && pip3 install --no-cache-dir jupyter-remote-desktop-proxy \
  && pip3 install --no-cache-dir jupyterhub \
  && pip3 install --no-cache-dir ipympl \
  && pip3 install --no-cache-dir uproot \
@@ -176,21 +168,6 @@ RUN echo /kassiopeia/install/lib64 > /etc/ld.so.conf.d/local-x86_64.conf \
 # Always show Kasper information when opening a terminal
 RUN echo "source /kassiopeia/install/bin/kasperenv.sh" >> /etc/profile
 
-# JupyterLab VNC desktop environment:
-#  Adapted from renku-vnc by SwissDataScienceCenter
-#    https://github.com/SwissDataScienceCenter/renku-vnc/tree/c458e1cefc017be657f7068605ad72c7ce91d78d/xvnc4
-#  License: Apache License 2.0
-#    https://github.com/SwissDataScienceCenter/renku-vnc/blob/5304c95e77b1ef3a71f224bc43582c7dd52b5dc8/LICENSE
-# Fix vnc.html
-# Fix vnc_lite.html
-# Resize to browser window
-# Make vnc_lite default
-RUN sed -i -e "s,'websockify',window.location.pathname.slice(1),g" /usr/share/novnc/app/ui.js \
-    && sed -i -e "s,'websockify',window.location.pathname.slice(1),g" /usr/share/novnc/vnc_lite.html \
-    && sed -i -e "s/rfb.scaleViewport = readQueryVariable('scale', false);/rfb.scaleViewport = readQueryVariable('scale', false);rfb.resizeSession = true;/g" /usr/share/novnc/vnc_lite.html \
-    && sed -i -e 's,<div id="sendCtrlAltDelButton">Send CtrlAltDel</div>,<div id="sendCtrlAltDelButton" hidden>Send CtrlAltDel</div><div onClick="window.location.reload(true);" style="position: fixed;top: 0px;right: 0px;border: 1px outset;padding: 5px 5px 4px 5px;cursor: pointer;">Reload</div>,g' /usr/share/novnc/vnc_lite.html \
-    && ln -fs /usr/share/novnc/vnc_lite.html /usr/share/novnc/index.html
-COPY --chown=root:root Docker/startvnc /
 
 # MyBinder mounts /etc/jupyter, making configuration from there e.g. containing terminals inaccessible
 # Moving /etc/jupyter to a safer place as a workaround
