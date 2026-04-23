@@ -9,6 +9,7 @@ ARG KASSIOPEIA_GIT_COMMIT=""
 
 ARG KASSIOPEIA_CPUS=""
 
+
 # --- runtime-base ---
 FROM fedora:43 as runtime-base
 ARG KASSIOPEIA_UID
