@@ -23,6 +23,7 @@ RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
  && mkdir /tmp/scr \
  && cd /tmp/scr \
+ && dnf install -y wget \
  && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-dri-drivers-25.1.4-2.fc43.x86_64.rpm \
  && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-filesystem-25.1.4-2.fc43.x86_64.rpm \
  && wget https://kojipkgs.fedoraproject.org//packages/mesa/25.1.4/2.fc43/x86_64/mesa-libEGL-25.1.4-2.fc43.x86_64.rpm \
