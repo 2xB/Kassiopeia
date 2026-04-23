@@ -21,12 +21,18 @@ LABEL description="Runtime base container"
 COPY Docker/packages.runtime packages
 RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
- && dnf install -y fedora-repos-archive.noarch \
- && dnf config-manager setopt updates-archive.enabled=0 \
- && dnf list --showduplicates mesa-dri-drivers  --enablerepo updates-archive \
- && dnf downgrade -y 'mesa*25.2.4*' --enablerepo updates-archive \
+ && mkdir /tmp/scr \
+ && cd /tmp/scr \
+ && dnf install -y koji \
+ && koji download-build --arch=x86_64 --arch=x86_64 mesa-dri-drivers-25.1.4-2.fc43 \
+ && koji download-build --arch=x86_64 --arch=x86_64 mesa-filesystem-25.1.4-2.fc43 \
+ && koji download-build --arch=x86_64 --arch=x86_64 mesa-libEGL-25.1.4-2.fc43 \
+ && koji download-build --arch=x86_64 --arch=x86_64 mesa-libGL-25.1.4-2.fc43 \
+ && koji download-build --arch=x86_64 --arch=x86_64 mesa-libgbm-25.1.4-2.fc43 \
+ && dnf downgrade -y /tmp/scr/*.rpm \
  && rm /packages \
  && dnf clean all
+
 
 # Setting user
 # Compare:
