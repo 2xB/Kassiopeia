@@ -24,7 +24,7 @@ RUN dnf update -y \
  && dnf install -y fedora-repos-archive.noarch \
  && dnf config-manager setopt updates-archive.enabled=0 \
  && dnf list --showduplicates mesa-dri-drivers  --enablerepo updates-archive \
- && dnf downgrade -y 'mesa*25.1.4*' --enablerepo updates-archive \
+ && dnf downgrade -y 'mesa*25.2.4*' --enablerepo updates-archive \
  && rm /packages \
  && dnf clean all
 
