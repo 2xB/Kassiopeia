@@ -8,6 +8,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+
 # Keep the following in sync with Documentation/gh-pages/source/setup_manual.rst !
 jobs:
   ubuntu_20_04:
@@ -110,7 +113,6 @@ jobs:
         export CXX=/usr/bin/clang++
         KASSIOPEIA_CUSTOM_CMAKE_ARGS="-DCMAKE_PREFIX_PATH=$(brew --prefix)" ./setup.sh
       shell: bash
-
     - name: Launch environment and run tests
       run: |
         source "$(brew --prefix root)/bin/thisroot.sh" && source install/bin/kasperenv.sh && UnitTestKasper
