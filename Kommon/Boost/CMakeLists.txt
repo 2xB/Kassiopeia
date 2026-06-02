@@ -36,7 +36,6 @@ target_link_libraries(KommonBoost
     PUBLIC
         KommonBase
         Boost::boost
-        Boost::system
         Boost::filesystem
 )
 
