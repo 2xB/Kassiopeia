@@ -1,4 +1,4 @@
-find_package( Boost ${BOOST_MINIMUM_VERSION} REQUIRED COMPONENTS filesystem system )
+find_package( Boost ${BOOST_MINIMUM_VERSION} REQUIRED COMPONENTS filesystem )
 
 # include directories
 
