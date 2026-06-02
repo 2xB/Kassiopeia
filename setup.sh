@@ -36,6 +36,12 @@ if [ $# -ne 0 ] ; then
     exit -1
 fi
 
+# Alias for macos
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    nproc() { sysctl -n hw.logicalcpu; }
+    realpath() { grealpath "$@"; }
+fi
+
 KASSIOPEIA_BUILD_TYPE=${KASSIOPEIA_BUILD_TYPE:-"RelWithDebInfo"}
 KASSIOPEIA_INSTALL_PREFIX=$(realpath -s ${KASSIOPEIA_INSTALL_PREFIX:-"install"})
 KASSIOPEIA_BUILD_PREFIX=$(realpath -s ${KASSIOPEIA_BUILD_PREFIX:-"build"})
@@ -45,11 +51,6 @@ KASSIOPEIA_CUSTOM_CMAKE_ARGS=${KASSIOPEIA_CUSTOM_CMAKE_ARGS:-""}
 
 KASSIOPEIA_GIT_BRANCH=${KASSIOPEIA_GIT_BRANCH:-""}
 KASSIOPEIA_GIT_COMMIT=${KASSIOPEIA_GIT_COMMIT:-""}
-
-# Alias for macos
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    alias nproc='sysctl -n hw.logicalcpu'
-fi
 
 KASSIOPEIA_CPUS=${KASSIOPEIA_CPUS:-"$(($(nproc)-1))"}
 
