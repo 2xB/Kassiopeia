@@ -12,6 +12,7 @@ if( VTK_MAJOR_VERSION GREATER 8 )
         InteractionStyle
         IOGeometry
         IOXML
+        RenderingAnnotation
         RenderingContext2D
         RenderingContextOpenGL2
         RenderingCore
