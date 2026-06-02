@@ -108,12 +108,11 @@ jobs:
             libomp
     - name: Build code
       run: |
-        source "$(brew --prefix root)/bin/thisroot.sh"
         export CC=/usr/bin/clang
         export CXX=/usr/bin/clang++
         KASSIOPEIA_CUSTOM_CMAKE_ARGS="-DCMAKE_PREFIX_PATH=$(brew --prefix)" ./setup.sh
       shell: bash
     - name: Launch environment and run tests
       run: |
-        source "$(brew --prefix root)/bin/thisroot.sh" && source install/bin/kasperenv.sh && UnitTestKasper
+        source install/bin/kasperenv.sh && UnitTestKasper
       shell: bash

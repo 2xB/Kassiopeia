@@ -46,33 +46,12 @@ KASSIOPEIA_CUSTOM_CMAKE_ARGS=${KASSIOPEIA_CUSTOM_CMAKE_ARGS:-""}
 KASSIOPEIA_GIT_BRANCH=${KASSIOPEIA_GIT_BRANCH:-""}
 KASSIOPEIA_GIT_COMMIT=${KASSIOPEIA_GIT_COMMIT:-""}
 
-if [[ -z "${KASSIOPEIA_CPUS+x}" ]]
-then
-    AVAILABLE_CPUS=""
-    if command -v nproc >/dev/null 2>&1
-    then
-        AVAILABLE_CPUS=$(nproc)
-    elif command -v getconf >/dev/null 2>&1
-    then
-        AVAILABLE_CPUS=$(getconf _NPROCESSORS_ONLN 2>/dev/null || true)
-    elif command -v sysctl >/dev/null 2>&1
-    then
-        AVAILABLE_CPUS=$(sysctl -n hw.ncpu 2>/dev/null || true)
-    fi
-
-    if [[ "$AVAILABLE_CPUS" =~ ^[0-9]+$ ]]
-    then
-        if (( AVAILABLE_CPUS > 1 ))
-        then
-            KASSIOPEIA_CPUS=$((AVAILABLE_CPUS-1))
-        else
-            KASSIOPEIA_CPUS=1
-        fi
-    else
-        KASSIOPEIA_CPUS=1
-        echo "WARNING: Could not auto-detect CPU count; falling back to single-threaded build."
-    fi
+# Alias for macos
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    alias nproc='sysctl -n hw.logicalcpu'
 fi
+
+KASSIOPEIA_CPUS=${KASSIOPEIA_CPUS:-"$(($(nproc)-1))"}
 
 echo "Building KASPER $KASSIOPEIA_BUILD_TYPE for '$KASSIOPEIA_INSTALL_PREFIX' in '$KASSIOPEIA_BUILD_PREFIX'"
 
