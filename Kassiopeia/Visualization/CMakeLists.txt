@@ -77,6 +77,10 @@ target_link_libraries( KassiopeiaVisualization
 )
 
 if( Kassiopeia_USE_VTK )
+    if( VTK_MAJOR_VERSION GREATER 8 )
+        find_dependency( VTK CONFIG COMPONENTS CommonColor ) # for vtkNamedColors
+    endif()
+
     if( VTK_MAJOR_VERSION GREATER 5 )
         target_compile_definitions( KassiopeiaVisualization PRIVATE VTK6 )
     endif()
