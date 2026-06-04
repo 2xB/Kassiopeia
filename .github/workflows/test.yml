@@ -87,8 +87,8 @@ jobs:
         source install/bin/kasperenv.sh && ASAN_OPTIONS=detect_leaks=0 UnitTestKasper
       shell: bash
 
-  macos_15:
-    runs-on: macos-15
+  macos_latest:
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
