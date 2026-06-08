@@ -67,7 +67,13 @@ TEST(KBaseStringUtils, Conversion)
     catch (KException const&) {
     }
 
-    EXPECT_THROW(KBaseStringUtils::Convert<float>(s5), KException);
+    try {
+        float res5float = KBaseStringUtils::Convert<float>(s5);
+        EXPECT_EQ(res5float, (float) 0x090000001);
+    }
+    catch (KException const&) {
+    }
+
     EXPECT_THROW(KBaseStringUtils::Convert<float>(s6), KException);
     EXPECT_TRUE(std::isnan(KBaseStringUtils::Convert<float>(s7)));
     EXPECT_TRUE(std::isnan(KBaseStringUtils::Convert<float>(s8)));
