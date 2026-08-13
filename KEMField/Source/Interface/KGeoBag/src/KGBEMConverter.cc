@@ -39,6 +39,38 @@ KGBEMConverter::KGBEMConverter() :
     fCurrentElement(nullptr)
 
 {}
+KGBEMConverter::KGBEMConverter(KEMField::KSurfaceContainer& aContainer) :
+    fSurfaceContainer(&aContainer),
+    fMinimumArea(0.),
+    fMaximumAspectRatio(1e100),
+    fVerbosity(0),
+    fOrigin(KThreeVector::sZero),
+    fXAxis(KThreeVector::sXUnit),
+    fYAxis(KThreeVector::sYUnit),
+    fZAxis(KThreeVector::sZUnit),
+    fCurrentOrigin(KThreeVector::sZero),
+    fCurrentXAxis(KThreeVector::sXUnit),
+    fCurrentYAxis(KThreeVector::sYUnit),
+    fCurrentZAxis(KThreeVector::sZUnit),
+    fCurrentElement(nullptr)
+
+{}
+KGBEMConverter::KGBEMConverter(std::shared_ptr<KEMField::KSurfaceContainer> aContainer) :
+    fSurfaceContainer(aContainer),
+    fMinimumArea(0.),
+    fMaximumAspectRatio(1e100),
+    fVerbosity(0),
+    fOrigin(KThreeVector::sZero),
+    fXAxis(KThreeVector::sXUnit),
+    fYAxis(KThreeVector::sYUnit),
+    fZAxis(KThreeVector::sZUnit),
+    fCurrentOrigin(KThreeVector::sZero),
+    fCurrentXAxis(KThreeVector::sXUnit),
+    fCurrentYAxis(KThreeVector::sYUnit),
+    fCurrentZAxis(KThreeVector::sZUnit),
+    fCurrentElement(nullptr)
+
+{}
 KGBEMConverter::~KGBEMConverter()
 {
     Clear();
@@ -203,13 +235,12 @@ KPosition KGBEMConverter::LocalToInternal(const katrin::KTwoVector& aVector)
 }
 
 KGBEMMeshConverter::KGBEMMeshConverter() = default;
-KGBEMMeshConverter::KGBEMMeshConverter(KEMField::KSurfaceContainer& aContainer)
+KGBEMMeshConverter::KGBEMMeshConverter(KEMField::KSurfaceContainer& aContainer) : KGBEMConverter(aContainer)
 {
-    fSurfaceContainer.reset(&aContainer);
 }
-KGBEMMeshConverter::KGBEMMeshConverter(std::shared_ptr<KEMField::KSurfaceContainer> aContainer)
+KGBEMMeshConverter::KGBEMMeshConverter(std::shared_ptr<KEMField::KSurfaceContainer> aContainer) :
+    KGBEMConverter(aContainer)
 {
-    fSurfaceContainer = aContainer;
 }
 KGBEMMeshConverter::~KGBEMMeshConverter() = default;
 
@@ -310,13 +341,12 @@ bool KGBEMMeshConverter::Add(KGMeshData* aData)
 }
 
 KGBEMAxialMeshConverter::KGBEMAxialMeshConverter() = default;
-KGBEMAxialMeshConverter::KGBEMAxialMeshConverter(KEMField::KSurfaceContainer& aContainer)
+KGBEMAxialMeshConverter::KGBEMAxialMeshConverter(KEMField::KSurfaceContainer& aContainer) : KGBEMConverter(aContainer)
 {
-    fSurfaceContainer.reset(&aContainer);
 }
-KGBEMAxialMeshConverter::KGBEMAxialMeshConverter(std::shared_ptr<KEMField::KSurfaceContainer> aContainer)
+KGBEMAxialMeshConverter::KGBEMAxialMeshConverter(std::shared_ptr<KEMField::KSurfaceContainer> aContainer) :
+    KGBEMConverter(aContainer)
 {
-     fSurfaceContainer = aContainer;
 }
 KGBEMAxialMeshConverter::~KGBEMAxialMeshConverter() = default;
 
@@ -403,13 +433,14 @@ bool KGBEMAxialMeshConverter::Add(KGAxialMeshData* aData)
 }
 
 KGBEMDiscreteRotationalMeshConverter::KGBEMDiscreteRotationalMeshConverter() = default;
-KGBEMDiscreteRotationalMeshConverter::KGBEMDiscreteRotationalMeshConverter(KEMField::KSurfaceContainer& aContainer)
+KGBEMDiscreteRotationalMeshConverter::KGBEMDiscreteRotationalMeshConverter(KEMField::KSurfaceContainer& aContainer) :
+    KGBEMConverter(aContainer)
 {
-    fSurfaceContainer.reset(&aContainer);
 }
-KGBEMDiscreteRotationalMeshConverter::KGBEMDiscreteRotationalMeshConverter(std::shared_ptr<KEMField::KSurfaceContainer> aContainer)
+KGBEMDiscreteRotationalMeshConverter::KGBEMDiscreteRotationalMeshConverter(
+    std::shared_ptr<KEMField::KSurfaceContainer> aContainer) :
+    KGBEMConverter(aContainer)
 {
-     fSurfaceContainer = aContainer;
 }
 KGBEMDiscreteRotationalMeshConverter::~KGBEMDiscreteRotationalMeshConverter() = default;
 
