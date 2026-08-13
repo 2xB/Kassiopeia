@@ -1,7 +1,6 @@
 mesa-dri-drivers
 vtk
 vtk-qt
-fmt
 
 boost-filesystem
 
