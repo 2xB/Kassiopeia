@@ -10,7 +10,7 @@ ARG KASSIOPEIA_GIT_COMMIT=""
 ARG KASSIOPEIA_CPUS=""
 
 # --- runtime-base ---
-FROM fedora:44 as runtime-base
+FROM fedora:44 AS runtime-base
 ARG KASSIOPEIA_UID
 ARG KASSIOPEIA_USER
 ARG KASSIOPEIA_GID
@@ -42,7 +42,7 @@ ENV PYTHONUSERBASE=/kassiopeia/install/python
 # ---
 
 # --- build-base ---
-FROM runtime-base as build-base
+FROM runtime-base AS build-base
 
 LABEL description="Build base container"
 
@@ -54,7 +54,7 @@ RUN dnf update -y \
 # ---
 
 # --- build ---
-FROM build-base as build
+FROM build-base AS build
 ARG KASSIOPEIA_USER
 ARG KASSIOPEIA_GROUP
 
@@ -92,7 +92,7 @@ ENTRYPOINT ["/kassiopeia/entrypoint.sh"]
 # ---
 
 # --- minimal ---
-FROM runtime-base as minimal
+FROM runtime-base AS minimal
 ARG KASSIOPEIA_USER
 
 LABEL description="Minimal run container"
@@ -121,7 +121,7 @@ CMD ["bash"]
 # ---
 
 # --- full-base ---
-FROM build-base as full-base
+FROM build-base AS full-base
 
 LABEL description="Full base container"
 
@@ -146,7 +146,7 @@ RUN sed -e 's/^passwd:\(.*\)/passwd:\1 ldap/' -e 's/^group:\(.*\)/group:\1 ldap/
 
 # --- full ---
 # Include build files to enable faster development
-FROM full-base as full
+FROM full-base AS full
 ARG KASSIOPEIA_USER
 
 LABEL description="Full run container"
