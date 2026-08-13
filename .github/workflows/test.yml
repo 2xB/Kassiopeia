@@ -51,12 +51,12 @@ jobs:
         source root/bin/thisroot.sh && source install/bin/kasperenv.sh && ASAN_OPTIONS=detect_leaks=0 UnitTestKasper
       shell: bash
 
-  fedora_43:
+  fedora_44:
     strategy:
       matrix:
         use_clang: [false, true]
     runs-on: ubuntu-latest
-    container: fedora:43
+    container: fedora:44
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies

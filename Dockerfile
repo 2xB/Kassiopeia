@@ -9,71 +9,8 @@ ARG KASSIOPEIA_GIT_COMMIT=""
 
 ARG KASSIOPEIA_CPUS=""
 
-# Mesa git ref (tag, branch or commit) to build from source, see the `mesa` stage
-ARG MESA_REF="mesa-26.1.6"
-ARG MESA_GALLIUM_DRIVERS="llvmpipe,softpipe"
-
-# --- mesa ---
-# Fedora 43 ships Mesa 25.3.6, which contains a regression that breaks VTK's
-# per-cell scalar coloring: every Kassiopeia geometry render comes out as a
-# flat, unlit, uncolored silhouette (Kassiopeia issue #146). Reproducer, version
-# matrix and screenshots: Docker/vtk-mesa-fedora43-bug/README.md, upstream
-# report: https://gitlab.freedesktop.org/mesa/mesa/-/work_items/15660
-#
-# The fix is not available as a Fedora 43 package, so Mesa is built from source
-# here and installed into /opt/mesa; `runtime-base` then puts it ahead of the
-# system Mesa for all following stages.
-#
-# MESA_REF defaults to mesa-26.1.6, the first upstream release whose release
-# notes list the fix. The Fedora 42 version that was known good, mesa-25.1.9,
-# can be used instead, but is not guaranteed to build against Fedora 43's LLVM:
-#   docker build --build-arg MESA_REF=mesa-25.1.9 ...
-#
-# Only the software rasterizers are built by default, as the container renders
-# through Xvfb/VNC (llvmpipe). Hardware drivers can be added on demand:
-#   docker build --build-arg MESA_GALLIUM_DRIVERS=llvmpipe,softpipe,radeonsi,iris ...
-FROM fedora:43 as mesa
-ARG MESA_REF
-ARG MESA_GALLIUM_DRIVERS
-ARG KASSIOPEIA_CPUS
-
-LABEL description="Mesa build container"
-
-COPY Docker/packages.mesa packages
-RUN dnf update -y \
- && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
- && rm /packages \
- && dnf clean all
-
-WORKDIR /tmp/mesa
-RUN git init . \
- && git remote add origin https://gitlab.freedesktop.org/mesa/mesa.git \
- && git fetch --depth 1 origin "$MESA_REF" \
- && git checkout FETCH_HEAD \
- && git log -1 --format='Building Mesa %H (%ai) %s'
-
-RUN meson setup build \
-      --prefix=/opt/mesa \
-      --libdir=lib64 \
-      -Dbuildtype=release \
-      -Dstrip=true \
-      -Dgallium-drivers=$MESA_GALLIUM_DRIVERS \
-      -Dvulkan-drivers=[] \
-      -Dplatforms=x11 \
-      -Dglx=dri \
-      -Dgles1=disabled \
-      -Dgles2=enabled \
-      -Dopengl=true \
-      -Dllvm=enabled \
-      -Dvalgrind=disabled \
-      -Dlibunwind=disabled \
- && ninja -C build -j${KASSIOPEIA_CPUS:-$(nproc)} \
- && ninja -C build install \
- && cd / && rm -rf /tmp/mesa
-# ---
-
 # --- runtime-base ---
-FROM fedora:43 as runtime-base
+FROM fedora:44 AS runtime-base
 ARG KASSIOPEIA_UID
 ARG KASSIOPEIA_USER
 ARG KASSIOPEIA_GID
@@ -86,14 +23,6 @@ RUN dnf update -y \
  && dnf install -y --setopt=install_weak_deps=False $(cat packages) \
  && rm /packages \
  && dnf clean all
-
-# Use the Mesa built in the `mesa` stage instead of Fedora 43's, which renders
-# VTK geometry incorrectly (see the `mesa` stage above). The system Mesa packages
-# stay installed but are shadowed by these two variables, so a build without this
-# override can be obtained by unsetting them.
-COPY --from=mesa /opt/mesa /opt/mesa
-ENV LIBGL_DRIVERS_PATH=/opt/mesa/lib64/dri \
-    LD_LIBRARY_PATH=/opt/mesa/lib64
 
 # Setting user
 # Compare:
@@ -113,7 +42,7 @@ ENV PYTHONUSERBASE=/kassiopeia/install/python
 # ---
 
 # --- build-base ---
-FROM runtime-base as build-base
+FROM runtime-base AS build-base
 
 LABEL description="Build base container"
 
@@ -125,7 +54,7 @@ RUN dnf update -y \
 # ---
 
 # --- build ---
-FROM build-base as build
+FROM build-base AS build
 ARG KASSIOPEIA_USER
 ARG KASSIOPEIA_GROUP
 
@@ -163,7 +92,7 @@ ENTRYPOINT ["/kassiopeia/entrypoint.sh"]
 # ---
 
 # --- minimal ---
-FROM runtime-base as minimal
+FROM runtime-base AS minimal
 ARG KASSIOPEIA_USER
 
 LABEL description="Minimal run container"
@@ -192,7 +121,7 @@ CMD ["bash"]
 # ---
 
 # --- full-base ---
-FROM build-base as full-base
+FROM build-base AS full-base
 
 LABEL description="Full base container"
 
@@ -217,7 +146,7 @@ RUN sed -e 's/^passwd:\(.*\)/passwd:\1 ldap/' -e 's/^group:\(.*\)/group:\1 ldap/
 
 # --- full ---
 # Include build files to enable faster development
-FROM full-base as full
+FROM full-base AS full
 ARG KASSIOPEIA_USER
 
 LABEL description="Full run container"

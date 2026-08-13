@@ -48,6 +48,8 @@ class KGBEMConverter : public KGVisitor, public KGSurface::Visitor, public KGSpa
 {
   protected:
     KGBEMConverter();
+    KGBEMConverter(KEMField::KSurfaceContainer& aContainer);
+    KGBEMConverter(std::shared_ptr<KEMField::KSurfaceContainer> aContainer);
 
   public:
     ~KGBEMConverter() override;
