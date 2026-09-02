@@ -97,9 +97,6 @@ jobs:
         brew cleanup
         # Update brew
         brew update
-        # Print debug output requested for reporting a Homebrew issue
-        brew config
-        brew doctor
         # Usual start of CI script:
         brew install \
             cmake \
@@ -115,6 +112,9 @@ jobs:
             sqlite \
             vtk \
             libomp
+        # Print debug output requested for reporting a Homebrew issue
+        brew config
+        brew doctor
     - name: Build code
       run: |
         export CC=/usr/bin/clang
