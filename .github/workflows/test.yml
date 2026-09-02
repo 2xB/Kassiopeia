@@ -90,6 +90,14 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install dependencies
       run: |
+        # Implement fixes previously suggested by brew doctor
+        brew untap homebrew/cask
+        brew untap homebrew/core
+        brew untap aws/tap
+        brew cleanup
+        # Update brew
+        brew update
+        # Usual start of CI script:
         brew install \
             cmake \
             coreutils \
@@ -104,6 +112,9 @@ jobs:
             sqlite \
             vtk \
             libomp
+        # Print debug output requested for reporting a Homebrew issue
+        brew config
+        brew doctor
     - name: Build code
       run: |
         export CC=/usr/bin/clang
