@@ -46,20 +46,15 @@
 #undef CL_TYPE8
 #undef CL_TYPE16
 
-#ifdef KEMFIELD_USE_DOUBLE_PRECISION
+#ifndef KEMFIELD_USE_DOUBLE_PRECISION
+#define KEMFIELD_USE_DOUBLE_PRECISION
+#endif
+
 #define CL_TYPE   cl_double
 #define CL_TYPE2  cl_double2
 #define CL_TYPE4  cl_double4
 #define CL_TYPE8  cl_double8
 #define CL_TYPE16 cl_double16
-#else
-#define CL_TYPE   cl_float
-#define CL_TYPE2  cl_float2
-#define CL_TYPE4  cl_float4
-#define CL_TYPE8  cl_float8
-#define CL_TYPE16 cl_float16
-#pragma GCC diagnostic ignored "-Wnarrowing"
-#endif
 
 #include <vector>
 

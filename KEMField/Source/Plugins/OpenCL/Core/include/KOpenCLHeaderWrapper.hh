@@ -18,6 +18,4 @@
 #include <CL/cl2.hpp>
 #endif
 
-#include "kEMField_opencl_defines.h"
-
 #endif /* KOPENCLHEADERWRAPPER_DEF */

@@ -15,10 +15,6 @@
 #define KEMFIELD_DEFAULT_GPU_ID 0
 #endif
 
-#ifndef KEMFIELD_USE_DOUBLE_PRECISION
-#pragma error "KEMField can't be used with OpenCL on a device that cannot provide double precision. Single precision is not good enough for charge calculations and will result in limited accuracy. You might be able to manually enable double precision with your device, see also: https://github.com/intel/compute-runtime/blob/master/opencl/doc/FAQ.md#feature-double-precision-emulation-fp64 ."
-#endif
-
 #ifndef DEFAULT_KERNEL_DIR
 #define DEFAULT_KERNEL_DIR "."
 #endif /* !DEFAULT_KERNEL_DIR */
@@ -158,15 +154,13 @@ void KOpenCLInterface::SetGPU(unsigned int i)
                            << ", since there are only " << fDevices.size() << " devices available." << eom;
         return;
     }
-#ifdef KEMFIELD_USE_DOUBLE_PRECISION
     cl::string extensions = fDevices[i].getInfo<CL_DEVICE_EXTENSIONS>();
     if ((std::strstr(extensions.c_str(), "cl_khr_fp64") == nullptr) &&
         (std::strstr(extensions.c_str(), "cl_amd_fp64") == nullptr)) {
         kem_cout(eWarning) << "Cannot set GPU device to ID # " << i
-                           << ", since it does not support double precision (and this program was built with double precision enabled)." << eom;
+                           << ", since it does not support double precision." << eom;
         return;
     }
-#endif /* KEMFIELD_USE_DOUBLE_PRECISION */
 
 
     cl::string name = fDevices[i].getInfo<CL_DEVICE_NAME>();
@@ -177,22 +171,14 @@ void KOpenCLInterface::SetGPU(unsigned int i)
     std::stringstream msg;
     msg << "Process #" << process_id << ": Setting GPU device to ID # " << i << " (" << name << ") of "
         << fDevices.size() << " available devices on host: " << KMPIInterface::GetInstance()->GetHostName();
-#ifdef KEMFIELD_USE_DOUBLE_PRECISION
     msg << " (double precision enabled)." << std::endl;
-#else
-    msg << "." << std::endl;
-#endif
     KMPIInterface::GetInstance()->PrintMessage(msg.str());
 
 #else
 
     kem_cout() << "Setting GPU device to ID # " << i << " (" << name << ") of " << fDevices.size()
                << " available devices";
-#ifdef KEMFIELD_USE_DOUBLE_PRECISION
     kem_cout() << " (double precision enabled)." << eom;
-#else
-    kem_cout() << "." << eom;
-#endif
 
 #endif
 
