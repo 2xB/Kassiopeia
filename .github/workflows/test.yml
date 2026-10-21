@@ -93,6 +93,7 @@ jobs:
         brew update
         brew install \
             cmake \
+            llvm \
             coreutils \
             boost \
             fftw \
@@ -107,8 +108,12 @@ jobs:
             libomp
     - name: Build code
       run: |
-        export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
+        export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm"
+        export CC="/opt/homebrew/opt/llvm/bin/clang"
+        export CXX="/opt/homebrew/opt/llvm/bin/clang++"
+
+        #export CC=/usr/bin/clang
+        #export CXX=/usr/bin/clang++
         ./setup.sh
       shell: bash
     - name: Launch environment and run tests
